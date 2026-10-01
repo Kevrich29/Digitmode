@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark"><meta name="theme-color" content="#ea5f1c">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Presenze"><meta name="format-detection" content="telephone=no">
+<title>Digitmode – Presenze</title>
+<style>:root{--bg:#eef0f6;--card:#fff;--tx:#161b2e;--mu:#667089;--bd:#e3e6ef;--hv:#f6f7fb;--ac:#ea5f1c;--ok:#16a34a;--ko:#dc2626;--vi:#7c5cff;--cy:#0891b2;--am:#d97706;--we:#cdd2e0;--hd:rgba(255,255,255,.82);--dot:rgba(22,27,46,.09);--sh:0 1px 2px rgba(20,27,50,.05),0 14px 30px -14px rgba(20,27,50,.16);--ring:0 0 0 3px rgba(234,95,28,.22);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d111e;--card:#161b2d;--tx:#e9ecf6;--mu:#8d95ab;--bd:#252b40;--hv:#1c2236;--we:#363f5c;--hd:rgba(22,27,45,.82);--dot:rgba(255,255,255,.07);--sh:0 1px 2px rgba(0,0,0,.3),0 14px 30px -14px rgba(0,0,0,.6);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d111e;--card:#161b2d;--tx:#e9ecf6;--mu:#8d95ab;--bd:#252b40;--hv:#1c2236;--we:#363f5c;--hd:rgba(22,27,45,.82);--dot:rgba(255,255,255,.07);--sh:0 1px 2px rgba(0,0,0,.3),0 14px 30px -14px rgba(0,0,0,.6);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+::selection{background:rgba(234,95,28,.28)}
+body{margin:0;color:var(--tx);font:14px/1.45 Inter,"Segoe UI Variable Text","SF Pro Text",system-ui,-apple-system,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;background:radial-gradient(1000px 420px at 100% -80px,rgba(234,95,28,.12),transparent 65%),radial-gradient(800px 380px at -5% -60px,rgba(124,92,255,.09),transparent 60%),radial-gradient(var(--dot) 1px,transparent 1.2px) 0 0/22px 22px,var(--bg);background-attachment:fixed}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;padding:18px 22px;background:var(--hd);-webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px);border-bottom:1px solid var(--bd)}
+header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,var(--ac),var(--vi) 55%,var(--cy))}
+.brand{display:flex;align-items:center;gap:10px;margin:0;font-size:20px;font-weight:800;letter-spacing:-.03em}.brand img{height:84px;width:auto;display:block;margin:-10px 0}
+nav{display:flex;gap:2px;flex-wrap:wrap;background:var(--hv);border:1px solid var(--bd);padding:3px;border-radius:13px;margin-right:auto}
+nav button{border:0;background:none;color:var(--mu);padding:9px 15px;border-radius:10px;font:inherit;font-weight:600;cursor:pointer;transition:background .18s,color .18s,box-shadow .18s}
+nav button:hover{color:var(--tx);background:var(--card)}
+nav button.on{background:linear-gradient(180deg,#f47b3e,var(--ac));color:#fff;box-shadow:0 6px 16px -6px rgba(234,95,28,.75),inset 0 1px 0 rgba(255,255,255,.28)}
+header .row{gap:10px}header label{flex-direction:row;align-items:center;gap:8px}
+main{max-width:1500px;margin:0 auto;padding:20px 22px 40px}
+
+/* card */
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px 18px;margin-bottom:14px;box-shadow:var(--sh)}
+h2{font-size:15px;font-weight:750;margin:0 0 12px;letter-spacing:-.015em}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.card>.row+h2{margin-top:22px}.card>.row+.row{margin-top:16px}.card>.row+.mu{margin-top:14px}
+.mh{justify-content:space-between;align-items:center;margin-bottom:12px}.mh h2{margin:0}.mh label{flex-direction:row;align-items:center;gap:8px}
+.rr{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:12px 0;border-bottom:1px solid var(--bd)}.rr:first-of-type{padding-top:4px}
+.rr>b{width:92px;font-weight:650}.rr>span{color:var(--mu);font-size:13px}.rr .sep{margin-left:14px;font-weight:600}.rr .mu{margin:0 0 0 8px;color:var(--tx);font-weight:650}
+.rr+h2{margin-top:22px}
+@media(min-width:701px){.rr{display:grid;grid-template-columns:120px 92px 56px 88px 92px 40px 1fr;gap:0 10px}.rr .sep{margin-left:0}.rr>b{width:auto;white-space:nowrap}}
+.warn{border-left:4px solid var(--am);background:linear-gradient(90deg,rgba(217,119,6,.12),transparent 60%),var(--card)}
+
+/* form */
+label{display:flex;flex-direction:column;gap:5px;font-size:12.5px;font-weight:600;color:var(--mu)}
+input,select{height:36px;padding:0 11px;border:1px solid var(--bd);border-radius:10px;background:var(--hv);color:var(--tx);font:inherit;font-size:13.5px;font-weight:500;font-variant-numeric:tabular-nums;transition:border-color .15s,box-shadow .15s,background .15s}
+input:hover,select:hover{border-color:#c9cedd}
+input:focus,select:focus{outline:0;border-color:var(--ac);box-shadow:var(--ring);background:var(--card)}
+input[type=date]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.6}
+input[type=file]{height:auto;padding:5px;max-width:100%}
+input[type=file]::file-selector-button{margin-right:10px;border:0;border-radius:7px;padding:6px 12px;background:var(--mu);color:#fff;font:inherit;font-weight:600;cursor:pointer}
+.form{display:grid;gap:10px}.form input{width:100%}.form .btn{justify-self:start;margin-top:4px}
+
+/* buttons */
+.btn{background:linear-gradient(180deg,#f47b3e,var(--ac));color:#fff;border:0;height:36px;padding:0 18px;border-radius:10px;font:inherit;font-weight:650;cursor:pointer;box-shadow:0 8px 18px -8px rgba(234,95,28,.8),inset 0 1px 0 rgba(255,255,255,.28);transition:transform .15s,box-shadow .15s,filter .15s}
+.btn:hover{filter:brightness(1.07);transform:translateY(-1px);box-shadow:0 12px 22px -8px rgba(234,95,28,.85),inset 0 1px 0 rgba(255,255,255,.28)}
+.btn:active{transform:none;filter:brightness(.96)}
+.btn.g{background:none;color:var(--ko);height:auto;padding:4px 10px;box-shadow:none;font-weight:600}
+.btn.g:hover{background:rgba(220,38,38,.1);filter:none;transform:none;box-shadow:none}
+
+/* tables */
+.tw{overflow-x:auto;scrollbar-width:thin}table{width:100%;border-collapse:collapse}
+th,td{padding:10px 14px;text-align:right;border-bottom:1px solid var(--bd);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-size:12px;color:var(--mu);font-weight:650;background:var(--hv)}
+th:first-child{border-top-left-radius:10px}th:last-child{border-top-right-radius:10px}
+tr:hover td{background:var(--hv)}tr:last-child td{border-bottom:0}
+.neg{color:var(--ko);font-weight:650}.pos{color:var(--ok);font-weight:650}.mu{color:var(--mu);font-size:12.5px;margin:8px 0 0}
+
+/* indicatori */
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:14px}
+.kp div{--k:var(--ac);--kg:rgba(234,95,28,.2);background:radial-gradient(150px 70px at 100% 0,var(--kg),transparent),var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px 18px 16px;box-shadow:var(--sh)}
+.kp div:nth-child(2){--k:var(--cy);--kg:rgba(8,145,178,.2)}.kp div:nth-child(3){--k:var(--vi);--kg:rgba(124,92,255,.2)}.kp div:nth-child(4){--k:var(--ko);--kg:rgba(220,38,38,.18)}
+.kp span{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;color:var(--mu)}
+.kp span::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--k);box-shadow:0 0 0 3px var(--kg),0 0 10px var(--k)}
+.kp b{display:block;margin-top:8px;font-size:32px;font-weight:750;line-height:1.1;letter-spacing:-.035em}
+
+/* stati presenza */
+.c-P{--c:#16a34a}.c-F{--c:#7c5cff}.c-R,.c-X{--c:#0891b2}.c-M{--c:#dc2626}.c-MA,.c-L,.c-I,.c-A{--c:#d97706}
+.c-P,.c-F,.c-R,.c-X,.c-M,.c-MA,.c-L,.c-I,.c-A{color:#fff;background:var(--c);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 2px 6px -2px var(--c)}
+.lg{display:flex;flex-wrap:wrap;gap:8px;font-size:12px;font-weight:600;margin-bottom:6px}.lg span{padding:3px 11px;border-radius:99px}
+
+/* quadro annuale */
+.gr{border-collapse:separate;border-spacing:3px;margin-top:8px}
+.gr th,.gr td{padding:0;min-width:27px;height:27px;text-align:center;font-size:11px;font-weight:700;border:0;border-radius:8px;background:none}
+.gr th{height:auto;padding:4px 0;border-radius:0;color:var(--mu)}
+.gr td:first-child,.gr th:first-child{text-align:left;padding:0 12px 0 4px;position:sticky;left:0;z-index:1;background:var(--card);white-space:nowrap;font-size:12.5px;font-weight:650;border-radius:0}
+.gr td.e{background:var(--hv);box-shadow:inset 0 0 0 1px var(--bd)}
+.gr td.we{background:var(--we);box-shadow:inset 0 0 0 1px rgba(22,27,46,.06)}
+.gr td.x{background:none}
+.gr tr:hover td.e{background:var(--bd)}
+.gr td[class^=c-]{cursor:default;color:#fff;background:var(--c);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 2px 6px -2px var(--c)}
+
+/* layout */
+.two{display:grid;grid-template-columns:minmax(260px,380px) 1fr;gap:14px;align-items:start}.two .card{margin-bottom:0}
+#print{display:none}
+@media(max-width:800px){.two{grid-template-columns:1fr}}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@page{size:A4;margin:0}
+@media print{
+html,body{background:#fff!important;margin:0}
+body>header,body>main{display:none}
+#print{display:block;color:#111;font-size:15px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pg{box-sizing:border-box;min-height:295mm;padding:16mm 15mm 14mm;display:flex;flex-direction:column;page-break-after:always;break-after:page}
+.pg:last-child{page-break-after:auto;break-after:auto}
+.ph{display:flex;align-items:center;gap:18px;padding-bottom:16px;margin-bottom:22px;border-bottom:3px solid #ea5f1c}
+.ph img{height:68px}
+.pg h2{margin:0;font-size:26px;letter-spacing:-.02em}
+.ph div div{font-size:16px;color:#444;margin-top:2px}
+.pg h3{margin:24px 0 10px;font-size:17px}
+.pg p{margin:0;font-size:15px;line-height:1.7}
+.pg table{width:100%;border-collapse:collapse;table-layout:auto}
+.pg th,.pg td{border:1px solid #9aa0ae;padding:10px 12px;color:#111;text-align:right;background:none;border-radius:0;white-space:normal;font-size:14.5px}
+.pg th:first-child,.pg td:first-child{text-align:left;border-radius:0;white-space:nowrap}
+.pg th{background:#eceef3;font-weight:700;font-size:13px}
+.pg tr:last-child td{border-bottom:1px solid #9aa0ae}
+.pg>p:last-child{margin-top:auto;padding-top:24px;font-size:12px;color:#555}
+.pg small{color:#555;font-size:12px}}
+/* tabella Maturazione */
+.mtw{border:1px solid var(--bd);border-radius:12px}
+.mt{table-layout:fixed;min-width:760px}.mt.md{min-width:720px}
+.mt col.c1{width:210px}.mt.md col.c1{width:140px}
+.mt th,.mt td{text-align:center;padding:10px 8px;border-radius:0;border-bottom:1px solid var(--bd);border-right:1px solid var(--bd);white-space:normal;background:var(--card)}
+.mt th{font-size:12px;font-weight:650;color:var(--mu);background:var(--hv)}
+.mt .mn,.mt td.mn{text-align:left;padding-left:16px;position:sticky;left:0;z-index:1}
+.mt .ge{border-right:2px solid color-mix(in srgb,var(--mu) 35%,var(--card))}
+.mt tr>:last-child{border-right:0}.mt tbody tr:last-child>*{border-bottom:0}
+.mt .gF{--gc:var(--vi)}.mt .gR{--gc:var(--cy)}.mt .gX{--gc:var(--am)}
+.mt thead :is(th.gF,th.gR,th.gX){background:color-mix(in srgb,var(--gc) 10%,var(--card))}
+.mt thead tr:first-child :is(th.gF,th.gR,th.gX){color:var(--tx);font-size:13px;box-shadow:inset 0 3px 0 var(--gc)}
+.mt td.mn:is(.gF,.gR,.gX){box-shadow:inset 4px 0 0 var(--gc);font-weight:650}
+.mt tr.cur td{background:color-mix(in srgb,var(--ac) 12%,var(--card))}.mt tr.fut td{color:var(--mu)}.mt tr.fut td.pos,.mt tr.fut td.neg{opacity:.75}
+.mt tr.r0 td,.mt tr.tt td{background:var(--hv);color:var(--mu)}.mt tr.tt td{border-top:2px solid var(--bd)}
+.btn.xl{background:linear-gradient(180deg,#26b862,#16a34a);box-shadow:0 8px 18px -8px rgba(22,163,74,.8),inset 0 1px 0 rgba(255,255,255,.28)}.btn.xl:hover{box-shadow:0 12px 22px -8px rgba(22,163,74,.85),inset 0 1px 0 rgba(255,255,255,.28)}
+
+.dl{display:grid;grid-template-columns:1fr 1fr;gap:16px}.dlc{display:flex;flex-direction:column;gap:12px}.dlc select{width:100%}.dlc .btn{width:100%;height:40px}
+@media(max-width:640px){.dl{grid-template-columns:1fr}}
+
+/* ===== MOBILE / TOUCH ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{-webkit-tap-highlight-color:transparent}
+button,select,input,label{touch-action:manipulation}
+.tw{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+@media(hover:none){.btn:hover{transform:none;filter:none}nav button:not(.on):hover{background:none;color:var(--mu)}.btn.g:hover{background:none}tr:hover td{background:none}}
+@media screen and (max-height:500px){header{position:relative;top:auto}.brand img{height:48px;margin:0}}
+@media screen and (max-width:700px){
+:root{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+header{position:relative;top:auto;padding:10px 12px 12px;gap:8px;-webkit-backdrop-filter:none;backdrop-filter:none}
+.brand img{height:44px;margin:0}
+header .row{width:100%;display:grid;grid-template-columns:84px 1fr 1fr;gap:8px}
+header label{flex-direction:column;align-items:stretch;gap:3px}
+header input,header select{width:100%;min-width:0}
+main{padding:12px 12px calc(88px + env(safe-area-inset-bottom,0px))}
+/* barra di navigazione in basso */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(5,1fr);gap:2px;width:auto;margin:0;border-radius:0;border-width:1px 0 0;overflow:visible;background:var(--card);padding:6px calc(6px + env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) calc(6px + env(safe-area-inset-left,0px));box-shadow:0 -6px 20px -10px rgba(20,27,50,.28)}
+nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;padding:7px 0;font-size:10.5px;letter-spacing:-.02em;border-radius:12px;white-space:nowrap}
+nav button::before{font-size:19px;line-height:1}
+nav button[data-v=az]::before{content:"\1F3E2"}nav button[data-v=dip]::before{content:"\1F464"}nav button[data-v=reg]::before{content:"\1F4DD"}nav button[data-v=anag]::before{content:"\1F465"}nav button[data-v=imp]::before{content:"\2699\FE0F"}
+/* campi e pulsanti a misura di dito (16px evita lo zoom automatico su iPhone) */
+input,select{height:44px;font-size:16px;border-radius:12px}
+input[type=date]{min-width:0;max-width:100%}
+input[type=file]{height:auto;font-size:14px;width:100%}
+.btn{height:44px;font-size:15px}.btn.g{height:auto;min-height:40px;padding:8px 12px}
+.card{padding:14px;border-radius:14px}
+.card.row>label,.card>.row:not(.mh)>label{flex:1 1 calc(50% - 6px);min-width:0}
+.card.row>label,.card>.row:not(.mh)>label:nth-child(-n+2){flex-basis:100%}
+.card.row select,.card>.row input,.card>.row select{width:100%!important}
+.card>.row>.btn{flex:1 1 100%}.form .btn{justify-self:stretch}
+.mh label{flex:0 1 55%}.mh select{width:100%}
+/* indicatori */
+.kp{grid-template-columns:1fr 1fr;gap:10px}.kp div{padding:12px 14px}.kp b{font-size:24px}.kp span{font-size:12px}
+/* tabelle */
+th,td{padding:9px 10px}
+.mt{min-width:620px}.mt.md{min-width:640px}.mt col.c1,.mt.md col.c1{width:104px}
+.mt th,.mt td{padding:9px 5px;font-size:12.5px}.mt .mn,.mt td.mn{padding-left:8px}
+.rr>b{width:100%}
+/* elenchi a schede (Azienda, Anagrafica) */
+.rs,.rs tbody,.rs tr,.rs td{display:block;width:100%}
+.rs tr:first-child{display:none}
+.rs tr{border:1px solid var(--bd);border-radius:12px;padding:6px 12px;margin-bottom:10px;background:var(--hv)}
+.rs tr:hover td{background:none}
+.rs td{display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:right;padding:7px 0;border:0;white-space:normal}
+.rs td:first-child{font-weight:700;font-size:15px;text-align:left;padding-bottom:8px;margin-bottom:2px;border-bottom:1px solid var(--bd)}
+.rs td[data-l]::before{content:attr(data-l);color:var(--mu);font-size:12.5px;font-weight:600;text-align:left}
+.rs td.ac{justify-content:flex-end;gap:6px;padding-top:8px}
+}
+</style></head><body>
+<header><h1 class="brand"><img src="data:image/png;base64,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" alt="Logo Digitmode"></h1>
+<nav><button data-v="az">Azienda</button><button data-v="dip">Dipendente</button><button data-v="reg">Registro</button><button data-v="anag">Anagrafica</button><button data-v="imp">Impostazioni</button></nav>
+<div class="row"><label>Anno<select id="yr"></select></label><label>Dal<input type="date" id="pf"></label><label>Al<input type="date" id="pt"></label></div></header>
+<main id="app"></main>
+<div id="print"></div>
+<script>const T={P:'Presenza',F:'Ferie',R:'Permesso ROL',X:'Ex Festività',M:'Malattia',MA:'Maternità',L:'Lutto',I:'Infortunio',A:'Altra assenza'};
+const DR={f:14.42,x:2.67,r1:1,r2:3.5,r3:6,y1:3,y2:7,fa:22,ra:72,xa:32};
+let S={emps:[],ent:[],rules:{...DR}};
+const rd=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};
+const save=()=>{try{localStorage.setItem('presenze_v2',JSON.stringify(S));return true}catch(e){if(!save.w){save.w=1;alert('Attenzione: il browser non riesce a salvare i dati (archiviazione bloccata o piena). Esporta subito un backup da Impostazioni.')}return false}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id),iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const fh=n=>(Math.round(n*100)/100).toLocaleString('it-IT'),uid=()=>Math.random().toString(36).slice(2,9);
+const now=new Date();let view='az',sel=null,Y=now.getFullYear();
+$('yr').innerHTML=[Y-2,Y-1,Y,Y+1].map(y=>`<option ${y==Y?'selected':''}>${y}</option>`).join('');
+const mr=()=>{$('pf').value=Y+'-01-01';$('pt').value=Y+'-12-31'};mr();
+$('yr').onchange=e=>{Y=+e.target.value;mr();render()};
+$('pf').onchange=$('pt').onchange=()=>render();
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{view=b.dataset.v;EDIT=null;render()});
+// maturazione: accredito a fine mese; mese di assunzione se assunto entro il 15
+function accr(e,upto){let f=0,r=0,x=0;const h=new Date(e.hire);
+ for(let m=0;m<12;m++){const end=new Date(Y,m+1,0);if(end>upto)break;if(h>end)continue;
+  if(h.getFullYear()==Y&&h.getMonth()==m&&h.getDate()>15)continue;
+  const yrs=(end-h)/(365.25*864e5),Q=S.rules;f+=Q.f;x+=Q.x;r+=yrs<Q.y1?Q.r1:yrs<Q.y2?Q.r2:Q.r3}
+ return{F:f,R:r,X:x}}
+const used=(id,t,to)=>S.ent.filter(a=>a.emp==id&&a.type==t&&a.date.startsWith(Y)&&(!to||a.date<=to)).reduce((s,a)=>s+a.h,0);
+// ---- presenza automatica: ogni giorno feriale (non festivo) dall'assunzione a oggi, senza voci registrate, vale come presenza ----
+const p2=n=>String(n).padStart(2,'0'),HOL={};
+function holSet(y){if(HOL[y])return HOL[y];
+ const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=(h+l-7*m+114)%31+1;
+ return HOL[y]=new Set(['01-01','01-06','04-25','05-01','06-02','08-15','11-01','12-08','12-25','12-26',iso(new Date(y,mo-1,da+1)).slice(5)].map(x=>y+'-'+x))}
+const autoDay=(e,ds)=>{if(ds<e.hire||ds>iso(now))return false;const w=new Date(ds+'T12:00').getDay();return w>0&&w<6&&!holSet(+ds.slice(0,4)).has(ds)};
+function entsIn(e,from,to){const all=S.ent.filter(a=>a.emp==e.id),have=new Set(all.map(a=>a.date)),out=all.filter(a=>a.date>=from&&a.date<=to),s0=from>e.hire?from:e.hire,t0=to<iso(now)?to:iso(now);
+ for(let d=new Date(s0+'T12:00');iso(d)<=t0;d.setDate(d.getDate()+1)){const ds=iso(d);if(!have.has(ds)&&autoDay(e,ds))out.push({id:'auto'+ds,emp:e.id,date:ds,type:'P',h:e.hpd,auto:1})}
+ return out}
+function stats(id){const o={};Object.keys(T).forEach(k=>o[k]={h:0,d:0});const e=S.emps.find(x=>x.id==id);
+ if(e)entsIn(e,$('pf').value,$('pt').value).forEach(a=>{o[a.type].h+=a.h;o[a.type].d++});return o}
+function balances(e){const ref=Y==now.getFullYear()?now:new Date(Y,11,31,23),a=accr(e,ref),p=accr(e,new Date(Y,11,31,23));
+ return['F','R','X'].map(k=>{const c=(+(e.cg||{})[k]||0)*e.hpd,g=used(e.id,k,iso(ref)),gt=used(e.id,k);
+  return{k,c,mat:a[k],g,saldo:c+a[k]-g,proj:c+p[k]-gt,pm:p[k]}})}
+const cl=n=>n<0?'neg':'pos';
+function render(){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v==view));
+ const A=$('app');if(!S.emps.length&&!['anag','imp'].includes(view)){A.innerHTML='<div class="card">Nessun dipendente. Aggiungilo in <b>Anagrafica</b>.</div>';return}
+ ({az:vAz,dip:vDip,reg:vReg,anag:vAnag,imp:vImp})[view](A)}
+const MN=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+const dh=Array.from({length:31},(_,i)=>`<th>${i+1}</th>`).join('');
+const legend=()=>`<div class="lg">${['P','F','R','M'].map(k=>`<span class="c-${k}"><b>${k}</b> ${k=='R'?'Permessi':T[k]}</span>`).join('')}<span class="c-A"><b>A</b> Altre assenze</span></div>`;
+function grid(id,m){const e0=S.emps.find(x=>x.id==id),n=new Date(Y,m+1,0).getDate();let r='';
+ for(let d=1;d<=31;d++){if(d>n){r+='<td class="x"></td>';continue}const dt=new Date(Y,m,d),a=S.ent.find(x=>x.emp==id&&x.date==iso(dt)),ds=iso(dt),c0=a?a.type:(e0&&autoDay(e0,ds)?'P':''),c=c0=='X'?'R':c0;
+  r+=`<td class="${c?'c-'+c:[0,6].includes(dt.getDay())?'we':'e'}" title="${c?(c=='R'?'Permessi':!a&&c=='P'?'Presenza (automatica)':T[c0]):''}">${['MA','L','I','A'].includes(c)?'A':c}</td>`}return r}
+let PM=now.getMonth(),MM='',XM=String(now.getMonth()),EDIT=null;
+const CFOK=/^[A-Z]{6}[0-9LMNPQRSTUV]{2}[A-EHLMPR-T][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]$/,eur=n=>(+n).toLocaleString('it-IT',{style:'currency',currency:'EUR'}),hasC=v=>v!==''&&v!=null&&Number.isFinite(+v);
+function report(sel,mm){const yr=mm==='';mm=yr?11:+mm;const list=S.emps.filter(e=>sel=='all'||e.id==sel),ref=new Date(Y,mm+1,0,23),pre=Y+'-'+String(mm+1).padStart(2,'0'),logo=document.querySelector('.brand img').src,N={F:'Ferie',R:'ROL',X:'Ex Festività'};
+ $('print').innerHTML=list.map(e=>{const g=v=>fh(v/e.hpd),en=entsIn(e,yr?Y+'-01-01':pre+'-01',yr?Y+'-12-31':pre+'-31'),a=accr(e,ref),pv=mm&&!yr?accr(e,new Date(Y,mm,0,23)):{F:0,R:0,X:0},pj=accr(e,new Date(Y,11,31,23));
+  const tr=Object.keys(T).map(k=>{const x=en.filter(y=>y.type==k);return `<tr><td>${T[k]}</td><td>${x.length}</td><td>${fh(x.reduce((s,y)=>s+y.h,0))}</td></tr>`}).join('');
+  const mt=['F','R','X'].map(k=>{const c=(+(e.cg||{})[k]||0)*e.hpd,gd=used(e.id,k,iso(ref)),gt=used(e.id,k);return yr?`<tr><td>${N[k]}</td><td>${g(c)}</td><td>${g(a[k])}</td><td>${g(gd)}</td><td><b>${g(c+a[k]-gd)}</b></td></tr>`:`<tr><td>${N[k]}</td><td>${g(c)}</td><td>${g(a[k]-pv[k])}</td><td>${g(a[k])}</td><td>${g(gd)}</td><td><b>${g(c+a[k]-gd)}</b></td><td>${g(c+pj[k]-gt)}</td></tr>`}).join('');
+  return `<div class="pg"><div class="ph"><img src="${logo}" alt=""><div><h2>Digitmode – Presenze e maturazione</h2><div>${yr?'Tutto l\'anno '+Y:MN[mm]+' '+Y}</div></div></div>
+  <p><b>Dipendente:</b> ${esc(e.name)} &nbsp;&nbsp; <b>Data assunzione:</b> ${e.hire} &nbsp;&nbsp; <b>Ore giornaliere:</b> ${e.hpd}</p>
+  <h3>Presenze e assenze ${yr?'dell\'anno':'del mese'}</h3><table><tr><th>Tipo</th><th>Giorni</th><th>Ore</th></tr>${tr}</table>
+  <h3>Ferie, ROL ed ex festività (GG = giorni)</h3><table>${yr?'<tr><th></th><th>Residuo prec.</th><th>Maturato nell\'anno</th><th>Goduto nell\'anno</th><th>Saldo a fine anno</th></tr>':'<tr><th></th><th>Residuo prec.</th><th>Maturato nel mese</th><th>Maturato da inizio anno</th><th>Goduto da inizio anno</th><th>Saldo a fine mese</th><th>Proiezione saldo a fine anno</th></tr>'}${mt}</table>
+  <p><small>Documento generato il ${new Date().toLocaleDateString('it-IT')}. Valori in GG (giorni) calcolati sulle ore giornaliere del dipendente.</small></p></div>`}).join('');
+ const t=document.title;document.title='Digitmode-maturazione-'+(yr?'anno':MN[mm])+'-'+Y;window.print();document.title=t}
+function demo(){const y=now.getFullYear(),E=[['Giulia Bianchi','2015-06-01',{F:4,R:3,X:1}],['Marco Verdi','2019-09-16',{F:2,R:1,X:0}],['Sara Neri','2023-02-01',{F:3,R:0,X:0}],['Luca Gialli','2025-03-03',{F:0,R:0,X:0}],['Elena Rosa','2021-11-02',{F:6,R:2,X:1}]].map(([name,hire,cg])=>({id:uid(),name,hire,hpd:8,cg}));
+ const Rg=[[0,'F','04-06','04-10'],[1,'F','04-06','04-10'],[0,'F','08-10','08-21'],[1,'F','08-10','08-21'],[2,'F','08-10','08-21'],[3,'F','08-17','08-21'],[2,'F','12-21','12-24'],[0,'L','05-12','05-14'],[1,'M','02-10','02-10'],[2,'M','01-19','01-20'],[3,'M','03-16','03-18'],[1,'I','06-15','06-19'],[4,'MA','05-04','12-31'],[3,'A','06-02','06-02'],[1,'X','03-23','03-23'],[1,'X','10-19','10-19'],[0,'R','02-27','02-27'],[0,'R','07-03','07-03'],[2,'R','05-22','05-22'],[1,'R','09-04','09-04']],M=new Map(),ent=[];
+ Rg.forEach(([i,t,a,b])=>{for(let d=new Date(y,+a.slice(0,2)-1,+a.slice(3));iso(d)<=y+'-'+b;d.setDate(d.getDate()+1)){if(![0,6].includes(d.getDay()))M.set(E[i].id+iso(d),t)}});
+ E.forEach(e=>{for(let d=new Date(y,0,1);d.getFullYear()==y;d.setDate(d.getDate()+1)){if([0,6].includes(d.getDay()))continue;const ds=iso(d);if(ds<e.hire)continue;let t=M.get(e.id+ds);if(!t&&ds<=iso(now))t='P';if(t)ent.push({id:uid(),emp:e.id,date:ds,type:t,h:8})}});
+ S={emps:E,ent,rules:{...DR}};save()}
+function vAz(A){let tot={},rows='';Object.keys(T).forEach(k=>tot[k]={h:0,d:0});
+ S.emps.forEach(e=>{const s=stats(e.id);Object.keys(T).forEach(k=>{tot[k].h+=s[k].h;tot[k].d+=s[k].d});
+  const ab=['M','MA','L','I','A'].reduce((n,k)=>n+s[k].d,0);
+  rows+=`<tr><td>${esc(e.name)}</td><td data-l="Giorni lavorati">${s.P.d}</td><td data-l="Ore lavorate">${fh(s.P.h)}</td><td data-l="Giorni ferie">${s.F.d}</td><td data-l="Giorni permessi">${s.R.d+s.X.d}</td><td data-l="Giorni malattia">${s.M.d}</td><td data-l="Altre assenze">${ab-s.M.d}</td></tr>`});
+ A.innerHTML=bkNote()+`<div class="kp"><div><span>Giorni lavorati (tutti)</span><b>${tot.P.d}</b></div><div><span>Ore lavorate</span><b>${fh(tot.P.h)}</b></div><div><span>Giorni di ferie</span><b>${tot.F.d}</b></div><div><span>Giorni malattia</span><b>${tot.M.d}</b></div></div>
+ <div class="card"><h2>Riepilogo periodo ${$('pf').value} → ${$('pt').value}</h2><div class="tw"><table class="rs"><tr><th>Dipendente</th><th>Giorni lavorati</th><th>Ore lavorate</th><th>Giorni ferie</th><th>Giorni permessi</th><th>Giorni malattia</th><th>Altre assenze</th></tr>${rows}</table></div></div>`}
+function vDip(A){if(!S.emps.find(e=>e.id==sel))sel=S.emps[0].id;const e=S.emps.find(x=>x.id==sel),b=balances(e),s=(()=>{const o={};Object.keys(T).forEach(k=>o[k]={h:0,d:0});const f=MM===''?Y+'-01-01':iso(new Date(Y,+MM,1)),t=MM===''?Y+'-12-31':iso(new Date(Y,+MM+1,0));entsIn(e,f,t).forEach(a=>{o[a.type].h+=a.h;o[a.type].d++});return o})();
+ const N={F:'Ferie',R:'ROL',X:'Ex Festività'},K=['F','R','X'],g=v=>fh(v/e.hpd);
+ const c0={};K.forEach(k=>c0[k]=(+(e.cg||{})[k]||0)*e.hpd);
+ const g2=v=>(v/e.hpd).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2}),cg7='<colgroup><col class="c1">'+'<col>'.repeat(6)+'</colgroup>';
+ let mat;
+ if(MM===''){
+ let prev={F:0,R:0,X:0},tot={F:0,R:0,X:0},rows='';
+ MN.forEach((mn,m)=>{const end=new Date(Y,m+1,0,23),a=accr(e,end),cur=Y==now.getFullYear()&&m==now.getMonth(),fut=end>now;
+  const cells=K.map(k=>{const mt1=a[k]-prev[k],sd=c0[k]+a[k]-used(e.id,k,iso(end));tot[k]+=mt1;return `<td class="g${k}">${g2(mt1)}</td><td class="g${k} ge ${cl(sd)}"><b>${g2(sd)}</b></td>`}).join('');
+  prev=a;rows+=`<tr class="${cur?'cur':fut?'fut':''}"><td class="mn">${mn}${cur?' · in corso':fut?' · previsione':''}</td>${cells}</tr>`});
+ mat=cg7+`<thead><tr><th rowspan="2" class="mn">Mese</th>${K.map(k=>`<th colspan="2" class="g${k} ge">${N[k]} (GG)</th>`).join('')}</tr>
+  <tr>${K.map(k=>`<th class="g${k}">Maturato</th><th class="g${k} ge">Rimane</th>`).join('')}</tr></thead>
+  <tbody><tr class="r0"><td class="mn">Residuo anno precedente</td>${K.map(k=>`<td class="g${k}">—</td><td class="g${k} ge"><b>${g2(c0[k])}</b></td>`).join('')}</tr>${rows}
+  <tr class="tt"><td class="mn">Totale maturato nell'anno</td>${K.map(k=>`<td class="g${k} ge" colspan="2"><b>${g2(tot[k])}</b></td>`).join('')}</tr></tbody>`;
+ }else{
+ const m=+MM,ref=new Date(Y,m+1,0,23),a=accr(e,ref),pv=m?accr(e,new Date(Y,m,0,23)):{F:0,R:0,X:0},pj=accr(e,new Date(Y,11,31,23));
+ mat=cg7+`<thead><tr><th class="mn"></th><th>Residuo prec. (GG)</th><th>Maturato nel mese (GG)</th><th>Maturato da inizio anno (GG)</th><th class="ge">Goduto da inizio anno (GG)</th><th>Saldo a fine ${MN[m].toLowerCase()} (GG)</th><th>Proiezione saldo fine anno (GG)</th></tr></thead><tbody>`+K.map(k=>{const gd=used(e.id,k,iso(ref)),gt=used(e.id,k),sd=c0[k]+a[k]-gd,pr=c0[k]+pj[k]-gt;return `<tr><td class="mn g${k}">${N[k]}</td><td>${g2(c0[k])}</td><td>${g2(a[k]-pv[k])}</td><td>${g2(a[k])}</td><td class="ge">${g2(gd)}</td><td class="${cl(sd)}"><b>${g2(sd)}</b></td><td class="${cl(pr)}"><b>${g2(pr)}</b></td></tr>`}).join('')+'</tbody>';
+ }
+ A.innerHTML=`<div class="card row"><label>Dipendente<select id="ds">${S.emps.map(x=>`<option value="${x.id}" ${x.id==sel?'selected':''}>${esc(x.name)}</option>`).join('')}</select></label><span class="mu">Assunto il ${e.hire} · ${e.hpd} h/giorno${hasC(e.cost)?' · '+eur(e.cost)+'/h':''}</span></div>
+ <div class="kp"><div><span>Giorni di presenza</span><b>${s.P.d}</b></div><div><span>Ore lavorate</span><b>${fh(s.P.h)}</b></div><div><span>Ferie godute</span><b>${s.F.d} gg</b></div><div><span>Malattia</span><b>${s.M.d} gg</b></div></div>
+ <div class="card"><div class="row mh"><h2>Maturazione ${Y}</h2><label>Mese<select id="mm"><option value="">Tutti i mesi</option>${MN.map((m,i)=>`<option value="${i}" ${MM!==''&&+MM===i?'selected':''}>${m}</option>`).join('')}</select></label></div><div class="tw mtw"><table class="mt${MM===''?'':' md'}">${mat}</table></div></div>
+ <div class="card"><h2>Dettaglio periodo</h2><div class="tw"><table><tr><th>Tipo</th><th>Giorni</th><th>Ore</th></tr>${Object.keys(T).map(k=>`<tr><td>${T[k]}</td><td>${s[k].d}</td><td>${fh(s[k].h)}</td></tr>`).join('')}</table></div></div>
+ <div class="card dl"><div class="dlc"><label>Mese da scaricare<select id="pm"><option value="" ${PM===''?'selected':''}>Tutto l'anno ${Y}</option>${MN.map((m,i)=>`<option value="${i}" ${PM!==''&&i==PM?'selected':''}>${m} ${Y}</option>`).join('')}</select></label><button class="btn" id="pdf">Scarica PDF maturazione</button></div><div class="dlc"><label>Mese da scaricare<select id="xm"><option value="" ${XM===''?'selected':''}>Tutto l'anno ${Y}</option>${MN.map((m,i)=>`<option value="${i}" ${XM!==''&&+XM===i?'selected':''}>${m} ${Y}</option>`).join('')}</select></label><button class="btn xl" id="xl">Scarica Excel maturazione</button></div></div>
+ <div class="card"><h2>Quadro annuale ${Y}</h2>${legend()}<div class="tw"><table class="gr"><tr><th>Mese</th>${dh}</tr>${MN.map((m,i)=>`<tr><td>${m}</td>${grid(e.id,i)}</tr>`).join('')}</table></div></div>`;
+ $('pm').onchange=ev=>{PM=ev.target.value===''?'':+ev.target.value};$('mm').onchange=ev=>{MM=ev.target.value;render()};$('xm').onchange=ev=>{XM=ev.target.value};$('xl').onclick=()=>exportExcel(XM,e.id);$('pdf').onclick=()=>report(e.id,$('pm').value);
+ $('ds').onchange=ev=>{sel=ev.target.value;render()}}
+function vReg(A){const e0=S.emps.find(e=>e.id==sel)||S.emps[0];sel=e0.id;
+ const list=S.ent.filter(a=>a.emp==sel&&a.date.startsWith(Y)).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,60);
+ A.innerHTML=`<div class="card"><h2>Registra presenze / assenze</h2><div class="row">
+ <label>Dipendente<select id="re">${S.emps.map(x=>`<option value="${x.id}" ${x.id==sel?'selected':''}>${esc(x.name)}</option>`).join('')}</select></label>
+ <label>Tipo<select id="rt">${Object.keys(T).map(k=>`<option value="${k}">${T[k]}</option>`).join('')}</select></label>
+ <label>Dal<input type="date" id="rf" value="${iso(now)}"></label><label>Al<input type="date" id="rz" value="${iso(now)}"></label>
+ <label>Ore/giorno<input type="number" id="rh" step="0.25" value="${e0.hpd}" style="width:90px"></label><button class="btn" id="ra">Aggiungi</button></div></div>
+ <div class="card"><h2>Ultime voci ${Y}</h2><div class="tw"><table><tr><th>Data</th><th>Tipo</th><th>Ore</th><th></th></tr>${list.map(a=>`<tr><td>${a.date}</td><td>${T[a.type]}</td><td>${fh(a.h)}</td><td><button class="btn g" data-d="${a.id}">✕</button></td></tr>`).join('')}</table></div></div>`;
+ $('re').onchange=ev=>{sel=ev.target.value;render()};
+ $('ra').onclick=()=>{const f=$('rf').value,z=$('rz').value,h=+$('rh').value;if(!f||!z||z<f)return alert('Controlla le date');
+  for(let d=new Date(f);iso(d)<=z;d.setDate(d.getDate()+1)){if([0,6].includes(d.getDay()))continue;const ds=iso(d);
+   S.ent=S.ent.filter(a=>!(a.emp==sel&&a.date==ds));S.ent.push({id:uid(),emp:sel,date:ds,type:$('rt').value,h})}
+  save();render()};
+ A.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{S.ent=S.ent.filter(a=>a.id!=b.dataset.d);save();render()})}
+const CFO=[1,0,5,7,9,13,15,17,19,21,2,4,18,20,11,3,6,8,12,14,16,10,22,25,24,23],CFD=[1,0,5,7,9,13,15,17,19,21];
+function cfCtl(s){let t=0;for(let i=0;i<15;i++){const c=s[i],dg=c>='0'&&c<='9',d=dg?+c:c.charCodeAt(0)-65;t+=i%2?d:(dg?CFD[d]:CFO[d])}return String.fromCharCode(65+t%26)}
+const cfSex=cf=>+cf.slice(9,11).replace(/[LMNPQRSTUV]/g,c=>'LMNPQRSTUV'.indexOf(c))>40?'F':'M';
+function cfCheck(cf,sx){if(!CFOK.test(cf))return'Codice fiscale non valido: deve avere 16 caratteri nel formato corretto (es. RSSMRA85T10A562S).';
+ if(cfCtl(cf)!==cf[15])return'Codice fiscale non valido: il carattere di controllo non corrisponde. Controlla che sia scritto correttamente.';
+ if(sx&&sx!==cfSex(cf))return'Il sesso indicato non coincide con quello del codice fiscale ('+(cfSex(cf)=='F'?'Femmina':'Maschio')+').';return''}
+function vAnag(A){const ed=EDIT?S.emps.find(x=>x.id==EDIT):null;if(!ed)EDIT=null;
+ const nm=ed?ed.name.split(' ')[0]:'',cg=ed?ed.name.split(' ').slice(1).join(' '):'',c=ed&&ed.cg||{};
+ A.innerHTML=`<div class="two"><div class="card"><h2>${ed?'Modifica dipendente':'Nuovo dipendente'}</h2><div class="form">
+ <label>Nome<input id="an" value="${esc(nm)}"></label><label>Cognome<input id="ac" value="${esc(cg)}"></label>
+ <label>Codice fiscale<input id="af" maxlength="16" autocomplete="off" style="text-transform:uppercase" value="${esc(ed&&ed.cf||'')}"></label>
+ <label>Sesso<select id="as"><option value="">—</option><option value="M" ${ed&&ed.sex=='M'?'selected':''}>Maschio</option><option value="F" ${ed&&ed.sex=='F'?'selected':''}>Femmina</option></select></label>
+ <label>Data assunzione<input type="date" id="ah" value="${ed?ed.hire:''}"></label><label>Ore/giorno<input type="number" id="ap" value="${ed?ed.hpd:8}" step="0.25"></label>
+ <label>Costo orario (€/h)<input type="number" id="ak" min="0" step="0.01" placeholder="es. 15,50" value="${ed&&hasC(ed.cost)?ed.cost:''}"></label>
+ <label>Residuo ferie (GG)<input type="number" id="cf" value="${+c.F||0}"></label><label>Residuo ROL (GG)<input type="number" id="cr" value="${+c.R||0}"></label><label>Residuo Ex Fest (GG)<input type="number" id="cx" value="${+c.X||0}"></label>
+ <button class="btn" id="aa">${ed?'Salva modifiche':'Aggiungi'}</button>${ed?'<button class="btn g" id="ae">Annulla</button>':''}</div></div>
+ <div class="card"><h2>Dipendenti</h2><div class="tw"><table class="rs"><tr><th>Nome e cognome</th><th>Codice fiscale</th><th>Sesso</th><th>Assunzione</th><th>Ore/gg</th><th>Costo orario</th><th></th></tr>${S.emps.map(e=>`<tr><td>${esc(e.name)}</td><td data-l="Codice fiscale">${esc(e.cf||'—')}</td><td data-l="Sesso">${e.sex||'—'}</td><td data-l="Assunzione">${e.hire}</td><td data-l="Ore/gg">${e.hpd}</td><td data-l="Costo orario">${hasC(e.cost)?eur(e.cost):'—'}</td><td class="ac"><button class="btn g" data-e="${e.id}">Modifica</button> <button class="btn g" data-x="${e.id}">Elimina</button></td></tr>`).join('')}</table></div></div></div>`;
+ $('aa').onclick=()=>{const n1=$('an').value.trim(),n2=$('ac').value.trim(),h=$('ah').value,cf=$('af').value.replace(/\s+/g,'').toUpperCase(),co=$('ak').value;let sx=$('as').value;
+  if(!n1||!n2||!h)return alert('Nome, cognome e data assunzione sono obbligatori');
+  if(cf){const er=cfCheck(cf,sx);if(er)return alert(er);
+   if(S.emps.some(x=>x.cf===cf&&x.id!=EDIT))return alert('Esiste già un dipendente con questo codice fiscale.');if(!sx)sx=cfSex(cf)}
+  if(co!==''&&!(+co>=0))return alert('Il costo orario deve essere un numero positivo');
+  const rec={name:n1+' '+n2,hire:h,hpd:+$('ap').value||8,cg:{F:+$('cf').value,R:+$('cr').value,X:+$('cx').value},cf,sex:sx,cost:co===''?'':+co};
+  if(ed)Object.assign(ed,rec);else S.emps.push({id:uid(),...rec});
+  EDIT=null;save();render()};
+ if($('ae'))$('ae').onclick=()=>{EDIT=null;render()};
+ A.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>{EDIT=b.dataset.e;render();try{scrollTo(0,0)}catch(x){}});
+ A.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{if(confirm('Eliminare il dipendente e le sue voci?')){if(EDIT==b.dataset.x)EDIT=null;S.emps=S.emps.filter(e=>e.id!=b.dataset.x);S.ent=S.ent.filter(a=>a.emp!=b.dataset.x);save();render()}})}
+
+// ---- BACKUP ----
+const LB='presenze_lastbackup';
+function lastBackup(){try{const v=localStorage.getItem(LB);return v?new Date(v):null}catch(e){return null}}
+function bkStatus(){const el=$('bs');if(!el)return;const l=lastBackup();
+ el.textContent='Dati attuali: '+S.emps.length+' dipendenti, '+S.ent.length+' voci. '+(l?'Ultimo backup esportato: '+l.toLocaleString('it-IT')+'.':'Nessun backup esportato da questo browser.')}
+function bkNote(){const l=lastBackup(),old=!l||(Date.now()-l)>7*864e5;
+ return old?'<div class="card warn">⚠ '+(l?'L\'ultimo backup risale al '+l.toLocaleDateString('it-IT'):'Non hai ancora esportato nessun backup')+'. Vai in <b>Impostazioni → Backup dei dati</b> ed esportalo per non perdere i dati.</div>':''}
+function exportBackup(){const d=new Date(),p=n=>String(n).padStart(2,'0');
+ const payload={app:'Digitmode-Presenze',format:1,exportedAt:d.toISOString(),data:{emps:S.emps,ent:S.ent,rules:S.rules}};
+ const blob=new Blob([JSON.stringify(payload,null,1)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='Digitmode-backup-'+iso(d)+'_'+p(d.getHours())+p(d.getMinutes())+'.json';document.body.appendChild(a);a.click();
+ setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},2000);
+ try{localStorage.setItem(LB,d.toISOString())}catch(e){}}
+function cleanBackup(raw){const D=raw&&raw.data?raw.data:raw;
+ if(!D||!Array.isArray(D.emps)||!Array.isArray(D.ent))throw new Error('il file non è un backup di Digitmode Presenze.');
+ const okD=v=>typeof v=='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&!isNaN(new Date(v)),fin=v=>v!==''&&v!==null&&Number.isFinite(+v);
+ const ids=new Set(),emps=D.emps.map((e,i)=>{
+  if(!e||e.id==null||String(e.id)==='')throw new Error('dipendente n. '+(i+1)+' senza identificativo.');
+  const id=String(e.id),name=String(e.name==null?'':e.name).trim();
+  if(!name)throw new Error('dipendente n. '+(i+1)+' senza nome.');
+  if(!okD(e.hire))throw new Error('dipendente "'+name+'": data di assunzione non valida.');
+  if(ids.has(id))throw new Error('dipendente "'+name+'" duplicato.');ids.add(id);
+  const c=e.cg||{};
+  const cf0=String(e.cf==null?'':e.cf).replace(/\s+/g,'').toUpperCase();
+  if(cf0&&!CFOK.test(cf0))throw new Error('dipendente "'+name+'": codice fiscale non valido.');
+  return{id,name,hire:e.hire,hpd:fin(e.hpd)&&+e.hpd!==0?+e.hpd:8,cg:{F:fin(c.F)?+c.F:0,R:fin(c.R)?+c.R:0,X:fin(c.X)?+c.X:0},cf:cf0,sex:['M','F'].includes(e.sex)?e.sex:'',cost:fin(e.cost)&&+e.cost>=0?+e.cost:''}});
+ const ent=D.ent.map((a,i)=>{
+  if(!a||!ids.has(String(a.emp)))throw new Error('voce n. '+(i+1)+' collegata a un dipendente inesistente.');
+  if(!okD(a.date))throw new Error('voce n. '+(i+1)+': data non valida.');
+  if(!T[a.type])throw new Error('voce n. '+(i+1)+': tipo "'+a.type+'" sconosciuto.');
+  if(!fin(a.h))throw new Error('voce n. '+(i+1)+': ore non valide.');
+  return{id:a.id!=null&&String(a.id)!==''?String(a.id):uid(),emp:String(a.emp),date:a.date,type:a.type,h:+a.h}});
+ const R=D.rules||{},rules={};Object.keys(DR).forEach(k=>rules[k]=fin(R[k])?+R[k]:DR[k]);
+ return{emps,ent,rules}}
+function importBackup(file){const r=new FileReader();
+ r.onerror=()=>alert('Importazione annullata: impossibile leggere il file.');
+ r.onload=()=>{let raw,D;
+  try{raw=JSON.parse(r.result)}catch(e){return alert('Importazione annullata: il file non è un JSON valido.')}
+  try{D=cleanBackup(raw)}catch(e){return alert('Importazione annullata: '+e.message)}
+  if(!confirm('Il backup contiene '+D.emps.length+' dipendenti e '+D.ent.length+' voci.\n\nI dati attuali ('+S.emps.length+' dipendenti, '+S.ent.length+' voci) verranno SOSTITUITI.\n\nContinuare?'))return;
+  try{localStorage.setItem('presenze_v2_prima_import',JSON.stringify(S))}catch(e){}
+  S={emps:D.emps,ent:D.ent,rules:D.rules,rv:7};
+  if(!save())return;
+  sel=null;view=S.emps.length?'az':'anag';render();alert('Backup importato correttamente.')};
+ r.readAsText(file)}
+// ---- EXCEL (.xlsx): generato direttamente nel browser, senza librerie e senza internet ----
+const XE=t=>String(t).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g,'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const colL=i=>{let t='';for(i++;i>0;i=Math.floor((i-1)/26))t=String.fromCharCode(65+(i-1)%26)+t;return t};
+const serial=d=>Math.round((Date.UTC(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8,10))-Date.UTC(1899,11,30))/864e5);
+const XS={n2:2,date:3,eur:4};
+function cellXml(c,r,ci,head){const ref=colL(ci)+(r+1);
+ if(c==null||c==='')return head?`<c r="${ref}" s="1"/>`:'';
+ if(head)return `<c r="${ref}" s="1" t="inlineStr"><is><t>${XE(c)}</t></is></c>`;
+ if(typeof c=='string')return `<c r="${ref}" t="inlineStr"><is><t xml:space="preserve">${XE(c)}</t></is></c>`;
+ if(typeof c=='number')return `<c r="${ref}"><v>${c}</v></c>`;
+ if(c.d)return `<c r="${ref}" s="3"><v>${serial(c.d)}</v></c>`;
+ return `<c r="${ref}" s="${XS[c.s]||0}">${c.f?`<f>${XE(c.f)}</f>`:''}<v>${c.v}</v></c>`}
+function sheetXml(sh){const R=sh.rows,nc=Math.max(...R.map(r=>r.length));
+ const w=sh.widths||[],cols=Array.from({length:nc},(_,i)=>`<col min="${i+1}" max="${i+1}" width="${w[i]||16}" customWidth="1"/>`).join('');
+ const pane=sh.freeze?`<pane xSplit="1" ySplit="1" topLeftCell="B2" activePane="bottomRight" state="frozen"/>`:'';
+ return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0">${pane}</sheetView></sheetViews><sheetFormatPr defaultRowHeight="15"/><cols>${cols}</cols><sheetData>${R.map((r,ri)=>`<row r="${ri+1}">${r.map((c,ci)=>cellXml(c,ri,ci,ri===0&&sh.head)).join('')}</row>`).join('')}</sheetData>${sh.filter?`<autoFilter ref="A1:${colL(nc-1)}${R.length}"/>`:''}</worksheet>`}
+const XSTY='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="3"><numFmt numFmtId="164" formatCode="dd/mm/yyyy"/><numFmt numFmtId="165" formatCode="#,##0.00"/><numFmt numFmtId="166" formatCode="#,##0.00 &quot;€&quot;"/></numFmts><fonts count="2"><font><sz val="10"/><name val="Arial"/></font><font><b/><sz val="10"/><name val="Arial"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFDE3D3"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left/><right/><top/><bottom style="thin"><color rgb="FFB0B6C4"/></bottom><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="5"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf><xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyFont="1" applyNumberFormat="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyFont="1" applyNumberFormat="1"/><xf numFmtId="166" fontId="0" fillId="0" borderId="0" xfId="0" applyFont="1" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+const CRCT=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+const crc32=b=>{let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=CRCT[(c^b[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0};
+function zipStore(files,mime){const te=new TextEncoder(),parts=[],cd=[],u16=v=>[v&255,v>>8&255],u32=v=>[v&255,v>>8&255,v>>16&255,v>>>24&255];let off=0;
+ files.forEach(([name,txt])=>{const nb=te.encode(name),d=te.encode(txt),crc=crc32(d);
+  const lh=new Uint8Array([0x50,0x4b,3,4,...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(crc),...u32(d.length),...u32(d.length),...u16(nb.length),...u16(0)]);
+  parts.push(lh,nb,d);
+  cd.push(new Uint8Array([0x50,0x4b,1,2,...u16(20),...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(crc),...u32(d.length),...u32(d.length),...u16(nb.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(off)]),nb);
+  off+=lh.length+nb.length+d.length});
+ const cs=cd.reduce((n,x)=>n+x.length,0),end=new Uint8Array([0x50,0x4b,5,6,0,0,0,0,...u16(files.length),...u16(files.length),...u32(cs),...u32(off),0,0]);
+ return new Blob([...parts,...cd,end],{type:mime})}
+function buildXlsx(sheets){const H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',RT='http://schemas.openxmlformats.org/officeDocument/2006/relationships',PK='http://schemas.openxmlformats.org/package/2006/relationships',CT='application/vnd.openxmlformats-officedocument.spreadsheetml.';
+ return zipStore([
+  ['[Content_Types].xml',H+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="'+CT+'sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="'+CT+'styles+xml"/>'+sheets.map((s,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="${CT}worksheet+xml"/>`).join('')+'</Types>'],
+  ['_rels/.rels',H+`<Relationships xmlns="${PK}"><Relationship Id="rId1" Type="${RT}/officeDocument" Target="xl/workbook.xml"/></Relationships>`],
+  ['xl/workbook.xml',H+`<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="${RT}"><bookViews><workbookView/></bookViews><sheets>${sheets.map((s,i)=>`<sheet name="${XE(s.name)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')}</sheets><calcPr fullCalcOnLoad="1"/></workbook>`],
+  ['xl/_rels/workbook.xml.rels',H+`<Relationships xmlns="${PK}">${sheets.map((s,i)=>`<Relationship Id="rId${i+1}" Type="${RT}/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')}<Relationship Id="rId${sheets.length+1}" Type="${RT}/styles" Target="styles.xml"/></Relationships>`],
+  ['xl/styles.xml',XSTY],
+  ...sheets.map((s,i)=>[`xl/worksheets/sheet${i+1}.xml`,H+sheetXml(s).replace(/^<\?xml[^>]*\?>/,'')])],CT+'sheet')}
+function exportExcel(mm,empId){try{
+ const f0=mm===''?Y+'-01-01':Y+'-'+p2(+mm+1)+'-01',f1=mm===''?Y+'-12-31':Y+'-'+p2(+mm+1)+'-31';
+ const sub=S.emps.filter(e=>!empId||e.id==empId),ent=sub.flatMap(e=>entsIn(e,f0,f1).map(a=>({a,e}))).sort((x,y)=>x.e.name.localeCompare(y.e.name,'it')||x.a.date.localeCompare(y.a.date));
+ const reg=[['Dipendente','Data','Mese','Tipo','Ore','Ore/giorno','Costo orario (€/h)','Giorni','Costo (€)']];
+ ent.forEach(({a,e})=>{const ri=reg.length+1;reg.push([e.name,{d:a.date},MN[+a.date.slice(5,7)-1],T[a.type],{v:a.h,s:'n2'},e.hpd,hasC(e.cost)?{v:+e.cost,s:'eur'}:'',{f:`E${ri}/F${ri}`,v:a.h/e.hpd,s:'n2'},{f:`E${ri}*G${ri}`,v:hasC(e.cost)?a.h*e.cost:0,s:'eur'}])});
+ const RL={fa:'Ferie annue (giorni)',f:'Ferie ogni mese (ore)',ra:'ROL annuo (ore)',r3:'ROL ogni mese (ore, dal 3° periodo)',r1:'ROL ore/mese 1° periodo',y1:'Anni fine 1° periodo',r2:'ROL ore/mese 2° periodo',y2:'Anni fine 2° periodo',xa:'Ex Fest annue (ore)',x:'Ex Fest ogni mese (ore)'};
+ const reg2=[['Parametro','Valore'],...Object.keys(RL).map(k=>[RL[k],{v:+S.rules[k]||0,s:'n2'}]),[''],['Note'],
+  ['I valori di maturazione sono in GG (giorni), calcolati sulle ore giornaliere di ciascun dipendente.'],
+  ['La maturazione si accredita a fine mese; il mese di assunzione matura solo se l\'assunzione è entro il 15.'],
+  ['Saldo a fine mese = Residuo prec. + Maturato da inizio anno − Goduto da inizio anno.'],
+  ['Le presenze dei giorni feriali senza voci registrate sono generate in automatico (esclusi sabato, domenica e festivi nazionali), dalla data di assunzione fino a oggi.'],
+  ['Foglio Registro: Giorni = Ore / Ore per giorno; Costo (€) = Ore × Costo orario (formule). Usa il filtro sulla colonna Tipo per isolare le presenze.'],
+  ['Generato il '+new Date().toLocaleDateString('it-IT')+' dall\'app Digitmode Presenze, anno '+Y+'.']];
+ const blob=buildXlsx([
+  {name:'Registro',rows:reg,head:1,filter:1,freeze:1,widths:[24,12,12,16,9,11,15,9,12]},
+  {name:'Regole e note',rows:reg2,head:1,widths:[46,12]}]);
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='Digitmode-maturazione-'+(sub.length==1?sub[0].name.replace(/[^A-Za-z0-9]+/g,'-')+'-':'')+(mm===''?'anno':MN[+mm])+'-'+Y+'.xlsx';document.body.appendChild(a);a.click();
+ setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},2000);
+ }catch(e){alert('Impossibile creare il file Excel: '+e.message)}}
+function vImp(A){const Q=S.rules,n=(k,l)=>`<input type="number" step="0.01" data-r="${k}" value="${Q[k]}" aria-label="${l}" style="width:92px">`;
+ A.innerHTML=`<div class="card"><h2>Regole di maturazione</h2>
+ <div class="rr"><b>Ferie annue</b>${n('fa','Ferie annue')}<span>giorni</span><span class="sep">ogni mese:</span>${n('f','Ferie ogni mese')}<span>ore</span><span class="mu" id="fd"></span></div>
+ <div class="rr"><b>ROL</b>${n('ra','ROL annuo')}<span>ore</span><span class="sep">ogni mese:</span>${n('r3','ROL ogni mese')}<span>ore</span></div>
+ <div class="rr"><b>Ex Fest</b>${n('xa','Ex Fest annue')}<span>ore</span><span class="sep">ogni mese:</span>${n('x','Ex Fest ogni mese')}<span>ore</span></div>
+  <div class="row"><button class="btn" id="rs">Salva regole</button></div></div>
+ <div class="card"><h2>Backup dei dati</h2>
+ <p class="mu" style="margin:0 0 10px">I dati sono salvati solo in questo browser. Esporta un backup regolarmente: il file contiene dipendenti, presenze/assenze e regole di maturazione, e si può reimportare anche su un altro computer o browser.</p>
+ <div class="row"><button class="btn" id="bx">Esporta backup</button><label>Importa backup (file .json)<input type="file" id="bi" accept=".json,application/json"></label></div>
+ <p class="mu" id="bs"></p></div>`;
+ const q=k=>A.querySelectorAll('[data-r="'+k+'"]'),v=k=>+q(k)[0].value||0,r2=x=>Math.round(x*100)/100,put=(k,x,ex)=>q(k).forEach(i=>{if(i!==ex)i.value=x}),fd=()=>{$('fd').textContent=fh(v('f')/8)+' giorni'};
+ q('fa')[0].oninput=()=>{put('f',r2(v('fa')*8/12));fd()};
+ q('f')[0].oninput=fd;fd();
+ q('xa')[0].oninput=()=>put('x',r2(v('xa')/12));
+ q('ra')[0].oninput=()=>put('r3',r2(v('ra')/12));
+ q('r3').forEach(i=>i.oninput=ev=>{put('r3',ev.target.value,ev.target);q('ra')[0].value=r2(v('r3')*12)});
+ bkStatus();
+ $('bx').onclick=()=>{exportBackup();bkStatus()};
+ $('bi').onchange=ev=>{const f=ev.target.files[0];ev.target.value='';if(f)importBackup(f)};
+ $('rs').onclick=()=>{A.querySelectorAll('[data-r]').forEach(i=>S.rules[i.dataset.r]=+i.value||0);save();alert('Regole salvate');render()};
+}
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+{const st=rd('presenze_v2');if(st)S={...S,...st};else demo()}if(S.rv!==7){S.rules={...DR,...(S.rules||{}),f:DR.f,x:DR.x,r3:DR.r3,fa:DR.fa,ra:DR.ra,xa:DR.xa};S.rv=7;save()}S.rules={...DR,...S.rules};view=S.emps.length?'az':'anag';render();
+</script></body></html>
