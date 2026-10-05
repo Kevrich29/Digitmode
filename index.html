@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark"><meta name="theme-color" content="#ea5f1c">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Presenze"><meta name="format-detection" content="telephone=no">
+<title>Digitmode – Presenze</title>
+<script>(function(){function show(m){var a=document.getElementById('app');if(!a)return document.addEventListener('DOMContentLoaded',function(){show(m)});a.innerHTML='<div class="card warn"><h2>L\'app non riesce a partire</h2><p class="mu"></p></div>';a.querySelector('p').textContent=m}addEventListener('error',function(e){var t=e.target;if(t&&t.tagName){if(t.tagName!=='SCRIPT'&&t.tagName!=='LINK')return;show('Non riesco a caricare "'+String(t.src||t.href).split('/').pop()+'". Tieni index.html, style.css, script.js e logo.png nella stessa cartella con questi nomi esatti, oppure apri Digitmode.html (file unico).')}else show('Errore: '+e.message)},true)})()</script>
+<link rel="stylesheet" href="style.css"></head><body>
+<header><h1 class="brand"><img src="logo.png" alt="Digitmode"></h1>
+<nav><button data-v="az">Azienda</button><button data-v="dip">Dipendente</button><button data-v="reg">Registro</button><button data-v="anag">Anagrafica</button><button data-v="imp">Impostazioni</button></nav>
+<div class="row"><label>Anno<select id="yr"></select></label><label>Dal<input type="date" id="pf"></label><label>Al<input type="date" id="pt"></label></div></header>
+<main id="app"></main>
+<noscript><div style="padding:20px;font:16px sans-serif">Per usare l'app serve JavaScript attivo nel browser.</div></noscript>
+<div id="print"></div>
+<script src="script.js" defer></script></body></html>
