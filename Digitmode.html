@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark"><meta name="theme-color" content="#ea5f1c">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Presenze"><meta name="format-detection" content="telephone=no">
+<title>Digitmode – Presenze</title>
+<script>(function(){function show(m){var a=document.getElementById('app');if(!a)return document.addEventListener('DOMContentLoaded',function(){show(m)});a.innerHTML='<div class="card warn"><h2>L\'app non riesce a partire</h2><p class="mu"></p></div>';a.querySelector('p').textContent=m}addEventListener('error',function(e){var t=e.target;if(t&&t.tagName){if(t.tagName!=='SCRIPT'&&t.tagName!=='LINK')return;show('Non riesco a caricare "'+String(t.src||t.href).split('/').pop()+'". Tieni index.html, style.css, script.js e logo.png nella stessa cartella con questi nomi esatti, oppure apri Digitmode.html (file unico).')}else show('Errore: '+e.message)},true)})()</script>
+<style>:root{--bg:#eef0f6;--card:#fff;--tx:#161b2e;--mu:#667089;--bd:#e3e6ef;--hv:#f6f7fb;--ac:#ea5f1c;--ok:#16a34a;--ko:#dc2626;--vi:#7c5cff;--cy:#0891b2;--am:#d97706;--we:#cdd2e0;--hd:rgba(255,255,255,.82);--dot:rgba(22,27,46,.09);--sh:0 1px 2px rgba(20,27,50,.05),0 14px 30px -14px rgba(20,27,50,.16);--ring:0 0 0 3px rgba(234,95,28,.22);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d111e;--card:#161b2d;--tx:#e9ecf6;--mu:#8d95ab;--bd:#252b40;--hv:#1c2236;--we:#363f5c;--hd:rgba(22,27,45,.82);--dot:rgba(255,255,255,.07);--sh:0 1px 2px rgba(0,0,0,.3),0 14px 30px -14px rgba(0,0,0,.6);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d111e;--card:#161b2d;--tx:#e9ecf6;--mu:#8d95ab;--bd:#252b40;--hv:#1c2236;--we:#363f5c;--hd:rgba(22,27,45,.82);--dot:rgba(255,255,255,.07);--sh:0 1px 2px rgba(0,0,0,.3),0 14px 30px -14px rgba(0,0,0,.6);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+::selection{background:rgba(234,95,28,.28)}
+body{margin:0;color:var(--tx);font:14px/1.45 Inter,"Segoe UI Variable Text","SF Pro Text",system-ui,-apple-system,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;background:radial-gradient(1000px 420px at 100% -80px,rgba(234,95,28,.12),transparent 65%),radial-gradient(800px 380px at -5% -60px,rgba(124,92,255,.09),transparent 60%),radial-gradient(var(--dot) 1px,transparent 1.2px) 0 0/22px 22px,var(--bg);background-attachment:fixed}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;padding:18px 22px;background:var(--hd);-webkit-backdrop-filter:saturate(1.6) blur(16px);backdrop-filter:saturate(1.6) blur(16px);border-bottom:1px solid var(--bd)}
+header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:linear-gradient(90deg,var(--ac),var(--vi) 55%,var(--cy))}
+.brand{display:flex;align-items:center;gap:10px;margin:0;font-size:20px;font-weight:800;letter-spacing:-.03em;cursor:pointer}.brand img{height:68px;width:auto;display:block;margin:-10px 0}
+nav{display:flex;gap:2px;flex-wrap:wrap;background:var(--hv);border:1px solid var(--bd);padding:3px;border-radius:13px;margin-right:auto}
+nav button{border:0;background:none;color:var(--mu);padding:9px 15px;border-radius:10px;font:inherit;font-weight:600;cursor:pointer;transition:background .18s,color .18s,box-shadow .18s}
+nav button:hover{color:var(--tx);background:var(--card)}
+nav button.on{background:linear-gradient(180deg,#f47b3e,var(--ac));color:#fff;box-shadow:0 6px 16px -6px rgba(234,95,28,.75),inset 0 1px 0 rgba(255,255,255,.28)}
+header .row{gap:10px}header label{flex-direction:row;align-items:center;gap:8px}
+main{max-width:1500px;margin:0 auto;padding:20px 22px 40px}
+
+/* card */
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px 18px;margin-bottom:14px;box-shadow:var(--sh)}
+h2{font-size:15px;font-weight:750;margin:0 0 12px;letter-spacing:-.015em}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.card>.row+h2{margin-top:22px}.card>.row+.row{margin-top:16px}.card>.row+.mu{margin-top:14px}
+.mh{justify-content:space-between;align-items:center;margin-bottom:12px}.mh h2{margin:0}.mh label{flex-direction:row;align-items:center;gap:8px}
+.rr{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:12px 0;border-bottom:1px solid var(--bd)}.rr:first-of-type{padding-top:4px}
+.rr>b{width:92px;font-weight:650}.rr>span{color:var(--mu);font-size:13px}.rr .sep{margin-left:14px;font-weight:600}.rr .mu{margin:0 0 0 8px;color:var(--tx);font-weight:650}
+.rr+h2{margin-top:22px}
+@media(min-width:701px){.rr{display:grid;grid-template-columns:120px 92px 56px 88px 92px 40px 1fr;gap:0 10px}.rr .sep{margin-left:0}.rr>b{width:auto;white-space:nowrap}}
+.warn{border-left:4px solid var(--am);background:linear-gradient(90deg,rgba(217,119,6,.12),transparent 60%),var(--card)}
+
+/* form */
+label{display:flex;flex-direction:column;gap:5px;font-size:12.5px;font-weight:600;color:var(--mu)}
+input,select{height:36px;padding:0 11px;border:1px solid var(--bd);border-radius:10px;background:var(--hv);color:var(--tx);font:inherit;font-size:13.5px;font-weight:500;font-variant-numeric:tabular-nums;transition:border-color .15s,box-shadow .15s,background .15s}
+input:hover,select:hover{border-color:#c9cedd}
+input:focus,select:focus{outline:0;border-color:var(--ac);box-shadow:var(--ring);background:var(--card)}
+input[type=date]::-webkit-calendar-picker-indicator{cursor:pointer;opacity:.6}
+input[type=file]{height:auto;padding:5px;max-width:100%}
+input[type=file]::file-selector-button{margin-right:10px;border:0;border-radius:7px;padding:6px 12px;background:var(--mu);color:#fff;font:inherit;font-weight:600;cursor:pointer}
+.form{display:grid;gap:10px}.form input{width:100%}.form .btn{justify-self:start;margin-top:4px}
+
+/* buttons */
+.btn{background:linear-gradient(180deg,#f47b3e,var(--ac));color:#fff;border:0;height:36px;padding:0 18px;border-radius:10px;font:inherit;font-weight:650;cursor:pointer;box-shadow:0 8px 18px -8px rgba(234,95,28,.8),inset 0 1px 0 rgba(255,255,255,.28);transition:transform .15s,box-shadow .15s,filter .15s}
+.btn:hover{filter:brightness(1.07);transform:translateY(-1px);box-shadow:0 12px 22px -8px rgba(234,95,28,.85),inset 0 1px 0 rgba(255,255,255,.28)}
+.btn:active{transform:none;filter:brightness(.96)}
+.btn.g{background:none;color:var(--ko);height:auto;padding:4px 10px;box-shadow:none;font-weight:600}
+.btn.g:hover{background:rgba(220,38,38,.1);filter:none;transform:none;box-shadow:none}
+
+/* tables */
+.tw{overflow-x:auto;scrollbar-width:thin}table{width:100%;border-collapse:collapse}
+th,td{padding:10px 14px;text-align:right;border-bottom:1px solid var(--bd);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-size:12px;color:var(--mu);font-weight:650;background:var(--hv)}
+th:first-child{border-top-left-radius:10px}th:last-child{border-top-right-radius:10px}
+tr:hover td{background:var(--hv)}tr:last-child td{border-bottom:0}
+.neg{color:var(--ko);font-weight:650}.pos{color:var(--ok);font-weight:650}.mu{color:var(--mu);font-size:12.5px;margin:8px 0 0}
+
+/* indicatori */
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:14px}
+.kp div{--k:var(--ac);--kg:rgba(234,95,28,.2);background:radial-gradient(150px 70px at 100% 0,var(--kg),transparent),var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px 18px 16px;box-shadow:var(--sh)}
+.kp div:nth-child(2){--k:var(--cy);--kg:rgba(8,145,178,.2)}.kp div:nth-child(3){--k:var(--vi);--kg:rgba(124,92,255,.2)}.kp div:nth-child(4){--k:var(--ko);--kg:rgba(220,38,38,.18)}.kp div:nth-child(5){--k:var(--ok);--kg:rgba(22,163,74,.18)}
+.kp span{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;color:var(--mu)}
+.kp span::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--k);box-shadow:0 0 0 3px var(--kg),0 0 10px var(--k)}
+.kp b{display:block;margin-top:8px;font-size:32px;font-weight:750;line-height:1.1;letter-spacing:-.035em}
+
+/* stati presenza */
+.c-P{--c:#16a34a}.c-F{--c:#7c5cff}.c-R,.c-X{--c:#0891b2}.c-M{--c:#dc2626}.c-MA,.c-L,.c-I,.c-A{--c:#d97706}.c-H{--c:#db2777}
+.c-P,.c-F,.c-R,.c-X,.c-M,.c-MA,.c-L,.c-I,.c-A,.c-H{color:#fff;background:var(--c);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 2px 6px -2px var(--c)}
+.lg{display:flex;flex-wrap:wrap;gap:8px;font-size:12px;font-weight:600;margin-bottom:6px}.lg span{padding:3px 11px;border-radius:99px}
+
+/* quadro annuale */
+.gr{border-collapse:separate;border-spacing:3px;margin-top:8px}
+.gr th,.gr td{padding:0;min-width:27px;height:27px;text-align:center;font-size:11px;font-weight:700;border:0;border-radius:8px;background:none}
+.gr th{height:auto;padding:4px 0;border-radius:0;color:var(--mu)}
+.gr td:first-child,.gr th:first-child{text-align:left;padding:0 12px 0 4px;position:sticky;left:0;z-index:1;background:var(--card);white-space:nowrap;font-size:12.5px;font-weight:650;border-radius:0}
+.gr td.e{background:var(--hv);box-shadow:inset 0 0 0 1px var(--bd)}
+.gr td.we{background:var(--we);box-shadow:inset 0 0 0 1px rgba(22,27,46,.06)}
+.gr td.x{background:none}
+.gr tr:hover td.e{background:var(--bd)}
+.gr td[class^=c-]{cursor:default;color:#fff;background:var(--c);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 2px 6px -2px var(--c)}
+
+/* layout */
+.two{display:grid;grid-template-columns:minmax(260px,380px) 1fr;gap:14px;align-items:start}.two .card{margin-bottom:0}
+#print{display:none}
+@media(max-width:800px){.two{grid-template-columns:1fr}}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@page{size:A4;margin:0}
+@media print{
+html,body{background:#fff!important;margin:0}
+body>header,body>main{display:none}
+#print{display:block;color:#111;font-size:15px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.pg{box-sizing:border-box;min-height:295mm;padding:14mm 15mm 12mm;display:flex;flex-direction:column;page-break-after:always;break-after:page}
+.pg:last-child{page-break-after:auto;break-after:auto}
+.ph{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid #e3e6ef}
+.ph img{display:block;height:102px;width:auto;margin:-22px 0 -22px -11px;flex:none}
+.pt{text-align:right}
+.pg h2{margin:0;font-size:21px;letter-spacing:-.02em;color:#161b2e}
+.pt .sub{display:inline-block;margin-top:7px;padding:4px 13px;border-radius:99px;background:#fff1e8;color:#c2410c;font-weight:700;font-size:12.5px}
+.emp{display:grid;grid-template-columns:1.7fr 1fr 1fr;background:#f6f7fb;border:1px solid #e3e6ef;border-radius:14px;padding:14px 4px 14px 18px;margin-bottom:12px}
+.emp>div{display:flex;flex-direction:column;gap:4px}
+.emp>div+div{border-left:1px solid #dfe3ee;padding-left:18px}
+.emp small{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:#667089;font-weight:700}
+.emp b{font-size:16px;color:#161b2e}
+.pk{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:4px}
+.pk>div{border:1px solid #e3e6ef;border-top:3px solid var(--c);border-radius:12px;padding:10px 13px 11px;background:#fff}
+.pk small{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#667089;font-weight:700}
+.pk b{display:block;margin-top:5px;font-size:23px;letter-spacing:-.03em;color:#161b2e}
+.pg h3{display:flex;align-items:center;gap:9px;margin:20px 0 9px;font-size:12.5px;text-transform:uppercase;letter-spacing:.09em;color:#161b2e}
+.pg h3::before{content:"";width:4px;height:15px;border-radius:2px;background:#ea5f1c}
+.pg table{width:100%;border-collapse:separate;border-spacing:0;table-layout:auto}
+.pg th,.pg td{border:0;border-bottom:1px solid #e9ecf4;padding:9px 12px;color:#161b2e;text-align:right;background:none;border-radius:0;white-space:normal;font-size:13px}
+.pg th{background:#f1f3f9;color:#667089;font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-weight:700;border-bottom:0}
+.pg th:first-child{border-radius:10px 0 0 10px}.pg th:last-child{border-radius:0 10px 10px 0}
+.pg th:first-child,.pg td:first-child{text-align:left;white-space:nowrap}
+.pg td:first-child{font-weight:600}
+.pg tr:last-child td{border-bottom:0}
+.pg td b{display:inline-block;padding:2px 10px;border-radius:99px;background:#fff1e8;color:#c2410c}
+.dt{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:9px}
+.pg tr.tt td{background:#fff4ed;color:#9a3412;font-weight:700}
+.pg tr.tt td:first-child{border-radius:10px 0 0 10px}.pg tr.tt td:last-child{border-radius:0 10px 10px 0}
+.pf{margin-top:auto;padding-top:14px;display:flex;justify-content:space-between;border-top:1px solid #e9ecf4;font-size:10.5px;color:#8a93a8}
+.pg small{font-size:10px}}
+/* tabella Maturazione */
+.mtw{border:1px solid var(--bd);border-radius:12px}
+.mt{table-layout:fixed;min-width:760px}.mt.md{min-width:720px}
+.mt col.c1{width:210px}.mt.md col.c1{width:140px}
+.mt th,.mt td{text-align:center;padding:10px 8px;border-radius:0;border-bottom:1px solid var(--bd);border-right:1px solid var(--bd);white-space:normal;background:var(--card)}
+.mt th{font-size:12px;font-weight:650;color:var(--mu);background:var(--hv)}
+.mt .mn,.mt td.mn{text-align:left;padding-left:16px;position:sticky;left:0;z-index:1}
+.mt .ge{border-right:2px solid color-mix(in srgb,var(--mu) 35%,var(--card))}
+.mt tr>:last-child{border-right:0}.mt tbody tr:last-child>*{border-bottom:0}
+.mt .gF{--gc:var(--vi)}.mt .gR{--gc:var(--cy)}.mt .gX{--gc:var(--am)}
+.mt thead :is(th.gF,th.gR,th.gX){background:color-mix(in srgb,var(--gc) 10%,var(--card))}
+.mt thead tr:first-child :is(th.gF,th.gR,th.gX){color:var(--tx);font-size:13px;box-shadow:inset 0 3px 0 var(--gc)}
+.mt td.mn:is(.gF,.gR,.gX){box-shadow:inset 4px 0 0 var(--gc);font-weight:650}
+.mt tr.cur td{background:color-mix(in srgb,var(--ac) 12%,var(--card))}.mt tr.fut td{color:var(--mu)}.mt tr.fut td.pos,.mt tr.fut td.neg{opacity:.75}
+.mt tr.r0 td,.mt tr.tt td{background:var(--hv);color:var(--mu)}.mt tr.tt td{border-top:2px solid var(--bd)}
+.btn.xl{background:linear-gradient(180deg,#26b862,#16a34a);box-shadow:0 8px 18px -8px rgba(22,163,74,.8),inset 0 1px 0 rgba(255,255,255,.28)}.btn.xl:hover{box-shadow:0 12px 22px -8px rgba(22,163,74,.85),inset 0 1px 0 rgba(255,255,255,.28)}
+
+.dl{display:grid;grid-template-columns:1fr;gap:16px}.dlc{display:flex;flex-direction:column;gap:12px}.dlc select{width:100%}.dlc .btn{width:100%;height:40px}.fmt{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(22,27,46,.45);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}.fmtb{background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:16px;box-shadow:var(--sh);padding:22px;width:100%;max-width:340px;display:flex;flex-direction:column;gap:12px;text-align:center}.fmtb h4{margin:0;font-size:17px}.fmtb p{margin:0;color:var(--mu)}.fmtr{display:grid;grid-template-columns:1fr 1fr;gap:10px}.fmtb .btn{width:100%;height:42px;margin:0}.fmtb .btn.c{background:none;box-shadow:none;color:var(--mu);height:auto;padding:6px}@media print{.fmt{display:none!important}}
+@media(max-width:640px){.dl{grid-template-columns:1fr}}
+
+/* ===== MOBILE / TOUCH ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{-webkit-tap-highlight-color:transparent}
+button,select,input,label{touch-action:manipulation}
+.tw{-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+@media(hover:none){.btn:hover{transform:none;filter:none}nav button:not(.on):hover{background:none;color:var(--mu)}.btn.g:hover{background:none}tr:hover td{background:none}}
+@media screen and (max-height:500px){header{position:relative;top:auto}.brand img{height:40px;margin:0}}
+@media screen and (max-width:700px){
+:root{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+header{position:relative;top:auto;padding:10px 12px 12px;gap:8px;-webkit-backdrop-filter:none;backdrop-filter:none}
+.brand img{height:36px;margin:0}
+header{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:end}
+header .brand{align-self:center;justify-self:center;min-width:0}header .row{display:contents}
+header label{flex-direction:column;align-items:stretch;gap:3px;min-width:0}
+header input,header select{width:100%;min-width:0}
+main{padding:12px 12px calc(88px + env(safe-area-inset-bottom,0px))}
+/* barra di navigazione in basso */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(5,1fr);gap:2px;width:auto;margin:0;border-radius:0;border-width:1px 0 0;overflow:visible;background:var(--card);padding:6px calc(6px + env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) calc(6px + env(safe-area-inset-left,0px));box-shadow:0 -6px 20px -10px rgba(20,27,50,.28)}
+nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;padding:7px 0;font-size:10.5px;letter-spacing:-.02em;border-radius:12px;white-space:nowrap}
+nav button::before{font-size:19px;line-height:1}
+nav button[data-v=az]::before{content:"\1F3E2"}nav button[data-v=dip]::before{content:"\1F464"}nav button[data-v=reg]::before{content:"\1F4DD"}nav button[data-v=anag]::before{content:"\1F465"}nav button[data-v=imp]::before{content:"\2699\FE0F"}
+/* campi e pulsanti a misura di dito (16px evita lo zoom automatico su iPhone) */
+input,select{height:44px;font-size:16px;border-radius:12px}
+input[type=date]{min-width:0;max-width:100%}
+input[type=file]{height:auto;font-size:14px;width:100%}
+.btn{height:44px;font-size:15px}.btn.g{height:auto;min-height:40px;padding:8px 12px}
+.card{padding:14px;border-radius:14px}
+.card.row>label,.card>.row:not(.mh)>label{flex:1 1 calc(50% - 6px);min-width:0}
+.card.row>label,.card>.row:not(.mh)>label:nth-child(-n+2){flex-basis:100%}
+.card.row select,.card>.row input,.card>.row select{width:100%!important}
+.card>.row>.btn{flex:1 1 100%}.form .btn{justify-self:stretch}
+.mh label{flex:0 1 55%}.mh select{width:100%}
+/* indicatori */
+.kp{grid-template-columns:1fr 1fr;gap:10px}.kp div{padding:12px 14px}.kp b{font-size:24px}.kp span{font-size:12px}.kp div:nth-child(5):last-child{grid-column:1/-1}
+/* tabelle */
+th,td{padding:9px 10px}
+.mt{min-width:620px}.mt.md{min-width:640px}.mt col.c1,.mt.md col.c1{width:104px}
+.mt th,.mt td{padding:9px 5px;font-size:12.5px}.mt .mn,.mt td.mn{padding-left:8px}
+.rr>b{width:100%}
+/* elenchi a schede (Azienda, Anagrafica) */
+.rs,.rs tbody,.rs tr,.rs td{display:block;width:100%}
+.rs tr:first-child{display:none}
+.rs tr{border:1px solid var(--bd);border-radius:12px;padding:6px 12px;margin-bottom:10px;background:var(--hv)}
+.rs tr:hover td{background:none}
+.rs td{display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:right;padding:7px 0;border:0;white-space:normal}
+.rs td:first-child{font-weight:700;font-size:15px;text-align:left;padding-bottom:8px;margin-bottom:2px;border-bottom:1px solid var(--bd)}
+.rs td[data-l]::before{content:attr(data-l);color:var(--mu);font-size:12.5px;font-weight:600;text-align:left}
+.rs td.ac{justify-content:flex-end;gap:6px;padding-top:8px}
+}
+
+/* ===== MOBILE: uniformità e allineamento ===== */
+.nw{white-space:nowrap}
+.mtm,.gmob{display:none}
+.mb{--gc:var(--vi);border:1px solid var(--bd);border-radius:12px;overflow:hidden;background:var(--card)}
+.mb.gR{--gc:var(--cy)}.mb.gX{--gc:var(--am)}
+.mb h3{margin:0;padding:11px 14px;font-size:13px;font-weight:700;letter-spacing:-.01em;background:color-mix(in srgb,var(--gc) 10%,var(--card));box-shadow:inset 0 3px 0 var(--gc)}
+.mb table{width:100%;table-layout:fixed}.mb col.c1{width:44%}
+.mb th,.mb td{text-align:center;padding:10px 6px;font-size:13px;border-radius:0;border-bottom:1px solid var(--bd);white-space:nowrap;background:none}
+.mb th{font-size:11.5px;background:var(--hv)}
+.mb th:first-child,.mb td:first-child{text-align:left;padding-left:14px}
+.mb tbody tr:last-child td{border-bottom:0}
+.mb tr.cur td{background:color-mix(in srgb,var(--ac) 12%,var(--card))}.mb tr.fut td{color:var(--mu)}.mb tr.fut td.pos,.mb tr.fut td.neg{opacity:.75}
+.mb tr.r0 td,.mb tr.tt td{background:var(--hv);color:var(--mu)}.mb tr.tt td{border-top:2px solid var(--bd)}
+.mb dl{margin:0}.mb dl>div{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--bd)}.mb dl>div:last-child{border-bottom:0}
+.mb dt{color:var(--mu);font-size:12.5px;font-weight:600}.mb dd{margin:0;font-size:14px;text-align:right}
+.mleg{margin:0}
+
+@media screen and (max-width:700px){
+/* intestazione */
+nav button{font-size:clamp(8.5px,2.6vw,10px);padding:7px 1px}
+/* indicatori: stessa altezza, etichetta in alto, valore in basso */
+.kp div{display:flex;flex-direction:column;justify-content:space-between;gap:8px}
+.kp span{align-items:flex-start;line-height:1.3}.kp span::before{flex:none;margin-top:4px}
+.kp b{margin-top:0}
+/* filtro Mese nella Maturazione */
+.mh{flex-direction:column;align-items:stretch;gap:10px}
+.mh label{flex:1 1 auto;flex-direction:column;align-items:stretch;gap:5px}
+.mh select{width:100%}
+/* Maturazione a blocchi, quadro annuale in verticale */
+.mtw.desk,.gdesk{display:none}
+.mtm{display:grid;gap:12px}.gmob{display:block}
+.gt{width:100%;table-layout:fixed;border-spacing:2px;margin-top:6px}
+.gt tr:first-child th:first-child{width:24px}
+.gt th{height:auto;min-width:0;padding:2px 0;font-size:9.5px;letter-spacing:-.03em;text-align:center;border-radius:0;background:none;color:var(--mu)}
+.gt th:first-child{position:static;width:auto;padding:0;text-align:center;font-size:10px;font-weight:700;background:none}
+.gt td{min-width:0;height:22px;font-size:10px;border-radius:6px}
+/* legenda uniforme */
+.lg{display:grid;grid-template-columns:1fr 1fr;gap:6px}.lg span{text-align:center;padding:5px 8px}.lg span:last-child:nth-child(odd){grid-column:1/-1}
+/* download PDF / Excel */
+.dl{gap:16px}
+/* elenco voci */
+.lv{table-layout:fixed}
+.lv th,.lv td{padding:10px 6px;font-size:13px}
+.lv th:first-child,.lv td:first-child{width:92px;padding-left:2px}
+.lv th:nth-child(2),.lv td:nth-child(2){text-align:left;padding-left:10px}
+.lv th:nth-child(3),.lv td:nth-child(3){width:42px}
+.lv th:nth-child(4),.lv td:nth-child(4){width:128px;text-align:right;padding:4px 0;white-space:nowrap}
+.lv .btn.g{min-height:40px;min-width:40px;padding:0}
+.lv .btn.g.mod{min-width:0;padding:0 12px;margin-right:6px}
+/* anagrafica: pulsanti uguali */
+.rs td.ac{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:10px}
+.rs td.ac .btn.g{width:100%;height:44px;min-height:0;padding:0;border:1px solid var(--bd);background:var(--card)}
+.rs td.ac .btn.g[data-e]{color:var(--tx)}
+/* impostazioni: regole in griglia */
+.rr{display:grid;grid-template-columns:minmax(0,1fr) 48px minmax(0,1fr) 48px;gap:8px;align-items:center}
+.rr>b{grid-column:1/3;grid-row:1;width:auto}
+.rr>.sep{grid-column:3/5;grid-row:1;margin:0;color:var(--mu);font-weight:600}
+.rr>input:nth-of-type(1){grid-column:1;grid-row:2}.rr>span:nth-of-type(1){grid-column:2;grid-row:2}
+.rr>input:nth-of-type(2){grid-column:3;grid-row:2}.rr>span:nth-of-type(3){grid-column:4;grid-row:2}
+.rr>.mu{grid-column:3/5;grid-row:3;margin:0}
+.rr input{width:100%!important}
+}
+
+.warn{border-left:1px solid var(--bd);box-shadow:inset 4px 0 0 var(--am),var(--sh)}
+@media screen and (max-width:700px){
+.rr+.row{margin-top:16px}.rr:has(+.row){border-bottom:0;padding-bottom:0}
+}
+
+.mt.my{min-width:820px}.mt.my col.c1{width:120px}
+
+/* toast di conferma salvataggio */
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,24px);opacity:0;pointer-events:none;z-index:99;padding:11px 20px;border-radius:12px;font-weight:650;font-size:14px;color:#fff;background:var(--ok);box-shadow:0 10px 28px -8px rgba(22,163,74,.7);transition:opacity .2s,transform .2s;max-width:calc(100% - 32px);text-align:center}
+#toast.err{background:var(--ko);box-shadow:0 10px 28px -8px rgba(220,38,38,.7)}
+#toast.warn{background:#f97316;box-shadow:0 10px 28px -8px rgba(249,115,22,.7)}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media print{#toast{display:none}}
+.gmob .tw{overflow-x:auto}.gmob .gt{min-width:440px}
+input[type=number]:invalid{outline:2px solid var(--ko)}
+
+/* ===== DESIGN v2: barra laterale, forme morbide, colori originali ===== */
+h2{font-size:16px;font-weight:700;letter-spacing:-.02em}
+/* navigazione con icone */
+nav button[data-v=az]{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='7' height='9' rx='2'/%3E%3Crect x='14' y='3' width='7' height='5' rx='2'/%3E%3Crect x='14' y='12' width='7' height='9' rx='2'/%3E%3Crect x='3' y='16' width='7' height='5' rx='2'/%3E%3C/svg%3E")}
+nav button[data-v=dip]{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4 21c0-4 3.6-7 8-7s8 3 8 7'/%3E%3C/svg%3E")}
+nav button[data-v=reg]{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='3' width='16' height='18' rx='3'/%3E%3Cpath d='M8 8h8M8 12h8M8 16h5'/%3E%3C/svg%3E")}
+nav button[data-v=anag]{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='8' r='3.5'/%3E%3Cpath d='M2.5 20c0-3.3 2.9-6 6.5-6s6.5 2.7 6.5 6'/%3E%3Ccircle cx='17.5' cy='9' r='2.5'/%3E%3Cpath d='M17.5 14c2.4 0 4 1.8 4 4.5'/%3E%3C/svg%3E")}
+nav button[data-v=imp]{--i:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 7h10M18 7h2M4 17h2M10 17h10'/%3E%3Ccircle cx='16' cy='7' r='2'/%3E%3Ccircle cx='8' cy='17' r='2'/%3E%3C/svg%3E")}
+nav button[data-v]{display:flex;align-items:center;gap:9px}
+nav button[data-v]::before{content:"";flex:none;width:19px;height:19px;font-size:0;background:currentColor;-webkit-mask:var(--i) center/contain no-repeat;mask:var(--i) center/contain no-repeat}
+header::after{display:none}
+nav{border-radius:14px}
+nav button{border-radius:11px}
+/* forme */
+.card,.kp div{border-radius:18px}
+.kp{gap:16px}
+input,select{border-radius:12px}
+.btn{border-radius:12px}
+.mtw{border-radius:14px}
+.mt th,.mt td{border-right-color:transparent}
+.gr th,.gr td{border-radius:7px}
+.gr td.e,.gr td.we{box-shadow:none}
+.gr td[class^=c-],.c-P,.c-F,.c-R,.c-X,.c-M,.c-MA,.c-L,.c-I,.c-A,.c-H{box-shadow:none}
+.lg span{padding:4px 12px}
+@media(min-width:701px){
+.brand img{height:46px;margin:0}
+header{padding:14px 22px}
+.card{padding:22px 24px;margin-bottom:18px}
+h2{margin-bottom:16px}
+.kp div{padding:18px 20px 20px}.kp b{font-size:34px;letter-spacing:-.04em}
+}
+/* barra laterale su schermi larghi: il logo ha la stessa larghezza del menu */
+@media screen and (min-width:1024px){
+header{position:fixed;inset:0 auto 0 0;width:264px;flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:22px;padding:24px 16px 20px;overflow-y:auto;border-bottom:0;border-right:1px solid var(--bd)}
+.brand{display:block;width:80%;margin:0 auto;aspect-ratio:281/102;overflow:hidden}
+.brand img{display:block;max-width:none;width:113.88%;height:auto;margin:-13.88% 0 0 -7.12%}
+nav{flex-direction:column;background:none;border:0;padding:0;gap:4px;margin:0}
+nav button{padding:11px 14px;gap:12px;text-align:left}
+header .row{flex-direction:column;align-items:stretch;gap:12px;margin-top:auto;padding-top:18px;border-top:1px solid var(--bd)}
+header label{flex-direction:column;align-items:stretch;gap:5px}
+header input,header select{width:100%}
+main{margin:0 0 0 264px;max-width:1640px;padding:32px 40px 56px}
+}
+@media screen and (max-width:700px){
+nav button[data-v]{gap:3px}
+nav button[data-v]::before{width:22px;height:22px}
+}
+
+.rs tr.tot td{font-weight:700;background:var(--hv);border-top:2px solid var(--bd)}@media(max-width:720px){.rs tr.tot td:first-child{font-size:14px}}
+
+/* selettore anno con frecce */
+.yl{display:flex;flex-direction:column;gap:5px;font-size:12.5px;font-weight:600;color:var(--mu);min-width:0}
+.ys{display:flex;align-items:stretch;gap:6px}
+.ys select{flex:1 1 auto;min-width:0;text-align:center;text-align-last:center;font-weight:700}
+.ys button{flex:0 0 auto;width:36px;height:36px;padding:0;border:1px solid var(--bd);border-radius:10px;background:var(--hv);color:var(--tx);font:inherit;font-size:20px;line-height:1;font-weight:700;cursor:pointer;transition:background .15s,border-color .15s,opacity .15s}
+.ys button:hover:not(:disabled){background:var(--card);border-color:var(--ac)}
+.ys button:disabled{opacity:.35;cursor:default}
+@media screen and (max-width:700px){header .yl{gap:3px}.ys button{width:44px;height:44px;border-radius:12px}}
+
+.kp div{justify-content:flex-start}
+.kp em.pc{display:block;height:6px;border-radius:99px;background:rgba(120,130,160,.2);overflow:hidden;margin:16px 0 0;font-style:normal}
+.kp em.pc i{display:block;height:100%;border-radius:99px;background:var(--k);box-shadow:0 0 8px var(--kg);transition:width .4s}
+.kp small{display:block;margin-top:4px;min-height:4.2em;font-size:11.5px;line-height:1.4;color:var(--mu);font-weight:500}
+.kp small strong{display:block;margin-bottom:1px;color:var(--tx);font-weight:750;font-size:14px}
+.kp div:nth-child(6){--k:#d97706;--kg:rgba(217,119,6,.18)}
+.kp.k3{grid-template-columns:repeat(3,1fr)}
+@media screen and (max-width:900px){.kp.k3{grid-template-columns:1fr 1fr}}
+.kp.kd{gap:14px;margin-bottom:14px}
+.kp.kd div{padding:15px 18px 16px;gap:5px;border-radius:16px}
+.kp.kd span{font-size:13px}
+.kp.kd b{font-size:29px}
+.kp.kd em.pc{height:6px;margin-top:10px}
+.kp.kd small{min-height:0;margin-top:5px;font-size:12px;line-height:1.4}
+.kp.kd small strong{display:inline;margin:0 6px 0 0;font-size:14px}
+.mt tr.tt td,.mb tr.tt td{background:color-mix(in srgb,var(--ac) 7.5%,var(--card));color:var(--tx);font-weight:800;font-size:13.5px;border-top:2px solid color-mix(in srgb,var(--ac) 50%,var(--card))}
+.mt tr.tt td b,.mb tr.tt td b{font-weight:800}
+.mt tr.tt td.pos,.mb tr.tt td.pos{color:var(--ok)}.mt tr.tt td.neg,.mb tr.tt td.neg{color:var(--ko)}
+.card tr.tot td{background:color-mix(in srgb,var(--cy) 7.5%,var(--card));color:var(--tx);font-weight:800;font-size:14px;border-top:2px solid color-mix(in srgb,var(--cy) 50%,var(--card))}
+.card .rs tr.tot td{background:color-mix(in srgb,var(--vi) 7.5%,var(--card));border-top:2px solid color-mix(in srgb,var(--vi) 50%,var(--card))}
+.card tr.tot td b{font-weight:800}
+</style></head><body>
+<header><h1 class="brand"><img src="data:image/png;base64,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" alt="Logo Digitmode"></h1>
+<nav><button data-v="az">Azienda</button><button data-v="dip">Dipendente</button><button data-v="reg">Registro assenze</button><button data-v="anag">Anagrafica</button><button data-v="imp">Impostazioni</button></nav>
+<div class="row"><div class="yl"><span>Anno</span><div class="ys"><button type="button" id="yp" aria-label="Anno precedente" title="Anno precedente">‹</button><select id="yr" aria-label="Anno"></select><button type="button" id="yn" aria-label="Anno successivo" title="Anno successivo">›</button></div></div><label>Dal<input type="date" id="pf"></label><label>Al<input type="date" id="pt"></label></div></header>
+<main id="app"></main>
+<noscript><div style="padding:20px;font:16px sans-serif">Per usare l'app serve JavaScript attivo nel browser.</div></noscript>
+<div id="print"></div>
+<script>const T={P:'Presenza',F:'Ferie',R:'Permesso ROL',X:'Ex Festività',M:'Malattia',MA:'Maternità',L:'Lutto',I:'Infortunio',A:'Altra assenza'};
+const DR={f:14.42,x:2.67,r1:0,r2:3,r3:6,y1:2,y2:4,p1:0,p2:50,fa:22,ra:72,xa:32};
+const syncR=()=>{const Q=S.rules;Q.r1=Q.ra*Q.p1/100/12;Q.r2=Q.ra*Q.p2/100/12};
+let S={emps:[],ent:[],rules:{...DR}};
+const rd=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};
+let ready=false,toastT,storageOK=true;try{localStorage.setItem('presenze_t','1');localStorage.removeItem('presenze_t')}catch(e){storageOK=false}
+function toast(msg,type){let t=document.getElementById('toast');if(!t){t=document.createElement('div');t.id='toast';t.setAttribute('role','status');t.setAttribute('aria-live','polite');document.body.appendChild(t)}t.textContent=msg;t.className='show '+(type||'ok');clearTimeout(toastT);toastT=setTimeout(()=>{t.className=''},2200)}
+const save=q=>{try{localStorage.setItem('presenze_v2',JSON.stringify(S));if(ready&&!q)toast('✓ Dati salvati');return true}catch(e){toast('Salvataggio non riuscito','err');if(!save.w){save.w=1;alert('Attenzione: il browser non riesce a salvare i dati (archiviazione bloccata o piena). Esporta subito un backup da Impostazioni.')}return false}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id),iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const fh=n=>(Math.round(n*100)/100).toLocaleString('it-IT'),uid=()=>Math.random().toString(36).slice(2,9);
+let now=new Date();let view='az',sel=null,Y=now.getFullYear();
+// Selettore anno: la lista va dal primo anno con dati fino all'anno prossimo (non cresce all'infinito) + frecce ‹ › per scorrere
+function fillYears(){const ny=new Date().getFullYear();let lo=ny;
+ try{(S.emps||[]).forEach(e=>{const y=+String(e.hire||'').slice(0,4);if(y>1990&&y<lo)lo=y});(S.ent||[]).forEach(t=>{const y=+String(t.date||'').slice(0,4);if(y>1990&&y<lo)lo=y})}catch(e){}
+ const hi=ny+1;lo=Math.min(lo,Y);const h=Math.max(hi,Y);let o='';for(let y=h;y>=lo;y--)o+=`<option${y==Y?' selected':''}>${y}</option>`;
+ const s=$('yr');if(s.dataset.k!==lo+'-'+h){s.innerHTML=o;s.dataset.k=lo+'-'+h}s.value=Y;
+ $('yp').disabled=Y<=lo;$('yn').disabled=Y>=h}
+fillYears();
+const stepY=d=>{const s=$('yr'),v=+s.value+d;if([...s.options].some(o=>+o.value==v)){Y=v;mr();render()}};
+$('yp').onclick=()=>stepY(-1);$('yn').onclick=()=>stepY(1);
+const mr=()=>{$('pf').value=Y+'-01-01';$('pt').value=Y+'-12-31'};mr();
+$('yr').onchange=e=>{Y=+e.target.value;mr();render()};
+$('pf').onchange=$('pt').onchange=()=>render();
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{view=b.dataset.v;EDIT=null;render()});{const lg=document.querySelector('.brand');lg.title='Vai ad Azienda';lg.onclick=()=>{view='az';EDIT=null;render()}}
+// maturazione: accredito a fine mese; mese di assunzione se assunto entro il 15
+// Base per il costo ore residue. mm==='' => tutto l'anno (residuo precedente + maturato anno, goduto nell'anno);
+// mm = mese => SOLO quel mese (maturato nel mese, goduto nel mese).
+function costBase(e,mm){
+ if(mm===''){const a=accr(e,new Date(Y,11,31,23)),cy=carry(e),to=Y+'-12-31';return{mF:cy.F+a.F,mP:cy.R+cy.X+a.R+a.X,gF:used(e.id,'F',to),gP:used(e.id,'R',to)+used(e.id,'X',to)}}
+ const m=+mm,a=accr(e,new Date(Y,m+1,0,23)),p=m?accr(e,new Date(Y,m,0,23)):{F:0,R:0,X:0},to=iso(new Date(Y,m+1,0,12)),tp=m?iso(new Date(Y,m,0,12)):'0000-00-00',u=(k,t)=>used(e.id,k,t);
+ return{mF:a.F-p.F,mP:a.R+a.X-p.R-p.X,gF:u('F',to)-u('F',tp),gP:u('R',to)+u('X',to)-u('R',tp)-u('X',tp)}}
+function accr(e,upto,Yr=Y){let f=0,r=0,x=0;const h=new Date(e.hire);
+ for(let m=0;m<12;m++){const end=new Date(Yr,m+1,0);if(end>upto)break;if(h>end)continue;
+  if(h.getFullYear()==Yr&&h.getMonth()==m&&h.getDate()>15)continue;
+  const yrs=(end-h)/(365.25*864e5),Q=S.rules;f+=Q.f;x+=Q.x;r+=yrs<Q.y1?Q.r1:yrs<Q.y2?Q.r2:Q.r3}
+ return{F:f,R:r,X:x}}
+const used=(id,t,to,Yr=Y)=>S.ent.filter(a=>a.emp==id&&a.type==t&&a.date.startsWith(String(Yr))&&(!to||a.date<=to)).reduce((s,a)=>s+a.h,0);
+// RESIDUO PRECEDENTE AUTOMATICO: per ogni anno dall'assunzione fino all'anno prima di Yr, maturato (a fine anno) meno goduto. Risultato in ORE.
+function carry(e,Yr=Y){const o={F:0,R:0,X:0},y0=+String(e.hire).slice(0,4);
+ for(let y=y0;y<Yr;y++){const a=accr(e,new Date(y,11,31,23),y);['F','R','X'].forEach(k=>{o[k]+=a[k]-used(e.id,k,'',y)})}
+ return o}
+const p2=n=>String(n).padStart(2,'0');
+function entsIn(e,from,to){return S.ent.filter(a=>a.emp==e.id&&a.date>=from&&a.date<=to)}
+// UNICO conteggio giorni/ore usato ovunque (riquadri in alto, Dettaglio periodo, Azienda, PDF): solo giorni lavorativi, dall'assunzione fino a oggi. Ogni giorno vale 1 e si divide in base alle ore inserite (es. 2 h presenza + 6 h permesso = 0,25 + 0,75); se le ore inserite sono meno delle ore giornaliere, il giorno vale solo quella parte.
+function cnt(e,f,t){const a=f>e.hire?f:e.hire,z=t<iso(now)?t:iso(now),o={},dy={},m={};Object.keys(T).forEach(k=>{o[k]=0;dy[k]=0});let fe=0;
+ if(a<=z){for(let d=new Date(a+'T12:00:00');iso(d)<=z;d.setDate(d.getDate()+1)){if(![0,6].includes(d.getDay())&&festivo(d))fe++}
+  entsIn(e,a,z).forEach(x=>{if(lavorativo(new Date(x.date+'T12:00:00'))){o[x.type]+=x.h;const q=m[x.date]=m[x.date]||{};q[x.type]=(q[x.type]||0)+x.h}});
+  Object.keys(m).forEach(ds=>{const q=m[ds],su=Math.max(Object.keys(q).reduce((t,k)=>t+q[k],0),e.hpd);Object.keys(q).forEach(k=>{dy[k]+=q[k]/su})});
+  Object.keys(dy).forEach(k=>{dy[k]=Math.round(dy[k]*100)/100})}
+ return{fe,o,dy,tot:Math.round((Object.keys(dy).reduce((t,k)=>t+dy[k],0)+fe)*100)/100}}
+const st=c=>{const o={};Object.keys(T).forEach(k=>o[k]={h:c.o[k]||0,d:c.dy[k]||0});return o};
+function stats(id){const e=S.emps.find(x=>x.id==id);return e?st(cnt(e,$('pf').value,$('pt').value)):st({o:{},dy:{}})}
+function balances(e){const ref=Y==now.getFullYear()?now:new Date(Y,11,31,23),a=accr(e,ref),p=accr(e,new Date(Y,11,31,23));
+ const cy=carry(e);return['F','R','X'].map(k=>{const c=cy[k],g=used(e.id,k,iso(ref)),gt=used(e.id,k);
+  return{k,c,mat:a[k],g,saldo:c+a[k]-g,proj:c+p[k]-gt,pm:p[k]}})}
+const cl=n=>n<0?'neg':'pos';
+// ---- PRESENZE AUTOMATICHE ----
+// Ogni giorno lavorativo (lun-ven, esclusi festivi nazionali) fino a oggi viene registrata la presenza con le ore giornaliere del dipendente,
+// meno le ore di eventuali assenze già registrate (anche inserite in anticipo). Ogni dipendente ha un segnalino 'auto' (ultimo giorno elaborato).
+function pasqua(y){const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=(h+l-7*m+114)%31+1;return new Date(y,mo-1,da)}
+const FEST=['01-01','01-06','04-25','05-01','06-02','08-15','11-01','12-07','12-08','12-25','12-26'];
+const FNAME={'01-01':'Capodanno','01-06':'Epifania','04-25':'Festa della Liberazione','05-01':'Festa dei Lavoratori','06-02':'Festa della Repubblica','08-15':'Ferragosto','11-01':'Tutti i Santi','12-07':"Sant'Ambrogio (Patrono di Milano)",'12-08':'Immacolata Concezione','12-25':'Natale','12-26':'Santo Stefano'};
+function festName(d){const k=p2(d.getMonth()+1)+'-'+p2(d.getDate());if(FNAME[k])return FNAME[k];if(iso(pasqua(d.getFullYear()))==iso(d))return 'Pasqua';const p=pasqua(d.getFullYear());if(p.getDate()+1&&(p.setDate(p.getDate()+1),iso(p)==iso(d)))return "Lunedì dell'Angelo (Pasquetta)";return 'Festività'}
+function festivo(d){const k=p2(d.getMonth()+1)+'-'+p2(d.getDate());if(FEST.includes(k))return true;const p=pasqua(d.getFullYear());p.setDate(p.getDate()+1);return iso(p)==iso(d)}
+const lavorativo=d=>![0,6].includes(d.getDay())&&!festivo(d);
+function fixDay(e,ds,create){if(!e||!e.auto||ds>e.auto||ds<e.hire)return false;const d=new Date(ds+'T12:00:00');if(!lavorativo(d))return false;
+ const altre=S.ent.some(a=>a.emp==e.id&&a.date==ds&&a.type!='P'),pr=S.ent.find(a=>a.emp==e.id&&a.date==ds&&a.type=='P');
+ if(pr){if(altre)S.ent=S.ent.filter(a=>a!==pr);else pr.h=e.hpd;return true}
+ if(create&&!altre){S.ent.push({id:uid(),emp:e.id,date:ds,type:'P',h:e.hpd});return true}return false}
+function autoFill(){const oggi=iso(now);let n=0;
+ S.emps.forEach(e=>{if(e.auto&&e.auto>=oggi)return;
+  const y0=new Date(now.getFullYear(),0,1),h=new Date(e.hire+'T12:00:00');
+  let from=e.auto?new Date(e.auto+'T12:00:00'):(h>y0?h:y0);if(e.auto)from.setDate(from.getDate()+1);if(from<h)from=new Date(h);
+  for(let d=new Date(from.getFullYear(),from.getMonth(),from.getDate());iso(d)<=oggi;d.setDate(d.getDate()+1)){
+   if(!lavorativo(d))continue;const ds=iso(d);
+   if(S.ent.some(a=>a.emp==e.id&&a.date==ds))continue;
+   S.ent.push({id:uid(),emp:e.id,date:ds,type:'P',h:e.hpd});n++}
+  e.auto=oggi});
+ return n}
+// Un giorno puo' avere ore parziali (es. 4 h ferie + 4 h presenza); se le voci non sono valide (duplicati o ore oltre le ore giornaliere) si riporta a una sola voce intera.
+// Se per lo stesso giorno ci sono piu' voci vince il tipo con piu' ore (a parita' l'assenza vince sulla presenza).
+function normEnt(){let ch=false;const by={};S.ent.forEach(a=>{const k=a.emp+'|'+a.date;(by[k]=by[k]||[]).push(a)});const out=[];
+ Object.keys(by).forEach(k=>{const L=by[k],em=S.emps.find(x=>x.id==L[0].emp);if(!em){out.push(...L);return}
+  const su=L.reduce((t,a)=>t+a.h,0);if(L.every((a,i)=>L.findIndex(b=>b.type==a.type)==i)&&su<=em.hpd+1e-9){out.push(...L);return}
+  const m={};L.forEach(a=>m[a.type]=(m[a.type]||0)+a.h);let bt=null;Object.keys(m).forEach(t=>{if(bt===null||m[t]>m[bt]||(m[t]==m[bt]&&bt=='P'))bt=t});
+  const w=L.find(a=>a.type==bt);if(L.length>1||w.h!=em.hpd)ch=true;w.h=em.hpd;out.push(w)});
+ S.ent=out;return ch}
+function autoRun(rend){const prima=JSON.stringify(S.emps.map(e=>e.auto)),n=autoFill();if(n||JSON.stringify(S.emps.map(e=>e.auto))!==prima){save(true);if(rend&&['az','dip'].includes(view))render()}return n}
+setInterval(()=>{if(iso(new Date())!==iso(now)){now=new Date();autoRun(true)}},60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&iso(new Date())!==iso(now)){now=new Date();autoRun(true)}});
+const okH=h=>Number.isFinite(h)&&h>0&&h<=24;
+function limH(el){if(el.value==='')return;const n=+el.value;if(n>24){el.value=24;toast('Massimo 24 ore al giorno','err')}else if(n<0){el.value='';toast('Le ore non possono essere negative','err')}}
+function render(){fillYears();document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v==view));
+ const A=$('app');if(!S.emps.length&&!['anag','imp'].includes(view)){A.innerHTML='<div class="card">Nessun dipendente. Aggiungilo in <b>Anagrafica</b>.</div>';return}
+ if(['dip','reg'].includes(view)&&!empsY().length){A.innerHTML='<div class="card">Nessun dipendente assunto nel '+Y+' o prima. Cambia anno oppure aggiungi un dipendente in <b>Anagrafica</b>.</div>';return}
+ ({az:vAz,dip:vDip,reg:vReg,anag:vAnag,imp:vImp})[view](A);
+ if(!storageOK)A.insertAdjacentHTML('afterbegin','<div class="card warn">⚠ Questo browser non consente di salvare i dati (archiviazione bloccata, navigazione privata o file aperto da anteprima/zip). Ciò che inserisci andrà perso al ricaricamento. Apri il file direttamente dalla cartella con Chrome, Edge o Firefox, oppure esporta spesso un backup da <b>Impostazioni</b>.</div>');
+ saveUI()}
+const UIK='presenze_ui';function saveUI(){try{localStorage.setItem(UIK,JSON.stringify({view,sel,Y,MM,MY1,MY2,pf:$('pf').value,pt:$('pt').value}))}catch(e){}}
+const MN=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+const dim=(y,m)=>new Date(y,m+1,0).getDate(),nd=()=>Math.max(...MN.map((_,m)=>dim(Y,m))),dh=()=>Array.from({length:nd()},(_,i)=>`<th>${i+1}</th>`).join('');
+const legend=()=>`<div class="lg">${['P','F','R','M'].map(k=>`<span class="c-${k}"><b>${k}</b> ${k=='R'?'Permessi':T[k]}</span>`).join('')}<span class="c-A"><b>A</b> Altre assenze</span><span class="c-H"><b>FN</b> Festività</span></div>`;
+function cell(e0,id,dt){const ds=iso(dt),a=S.ent.find(x=>x.emp==id&&x.date==ds&&x.type!='P')||S.ent.find(x=>x.emp==id&&x.date==ds),c0=a?a.type:'',c=c0=='X'?'R':c0,fn=!c&&(festivo(dt)||iso(pasqua(dt.getFullYear()))==iso(dt));
+ return `<td class="${c?'c-'+c:fn?'c-H':[0,6].includes(dt.getDay())?'we':'e'}" title="${a?(c=='R'?'Permessi':T[c0])+' · '+fh(a.h)+' h':fn?festName(dt):''}">${fn?'FN':['MA','L','I','A'].includes(c)?'A':c}</td>`}
+function grid(id,m){const e0=S.emps.find(x=>x.id==id),n=dim(Y,m);let r='';
+ for(let d=1;d<=nd();d++)r+=d>n?'<td class="x"></td>':cell(e0,id,new Date(Y,m,d));return r}
+function gridT(id){const e0=S.emps.find(x=>x.id==id);let r='';
+ for(let d=1;d<=nd();d++){r+=`<tr><th>${d}</th>`;for(let m=0;m<12;m++)r+=d>dim(Y,m)?'<td class="x"></td>':cell(e0,id,new Date(Y,m,d));r+='</tr>'}return r}
+let DM='',MM='',EDIT=null,REG=null,MY1=null,MY2=null;
+const CFOK=/^[A-Z]{6}[0-9LMNPQRSTUV]{2}[A-EHLMPR-T][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]$/,eur=n=>(+n).toLocaleString('it-IT',{style:'currency',currency:'EUR'}),hasC=v=>v!==''&&v!=null&&Number.isFinite(+v);
+function report(sel,mm){const yr=mm==='';mm=yr?11:+mm;const list=S.emps.filter(e=>(sel=='all'||e.id==sel)&&+String(e.hire).slice(0,4)<=Y),ref=new Date(Y,mm+1,0,23),pre=Y+'-'+String(mm+1).padStart(2,'0'),logo=document.querySelector('.brand img').src,N={F:'Ferie',R:'ROL',X:'Ex Festività'},DC={P:'#16a34a',F:'#7c5cff',R:'#0891b2',X:'#0891b2',M:'#dc2626',MA:'#ec4899',L:'#64748b',I:'#f59e0b',A:'#d97706'};
+ $('print').innerHTML=list.map(e=>{const g=v=>fh(v/e.hpd),en=entsIn(e,yr?Y+'-01-01':pre+'-01',yr?Y+'-12-31':pre+'-31'),a=accr(e,ref),pv=mm&&!yr?accr(e,new Date(Y,mm,0,23)):{F:0,R:0,X:0},pj=accr(e,new Date(Y,11,31,23));
+  const cc=cnt(e,yr?Y+'-01-01':pre+'-01',yr?Y+'-12-31':pre+'-31'),tr=Object.keys(T).filter(k=>!['M','MA','L','I'].includes(k)).map(k=>`<tr><td><i class="dt" style="background:${DC[k]}"></i>${T[k]}</td><td>${fh(cc.dy[k])}</td><td>${fh(cc.o[k])}</td></tr>`).join('');
+  const cyr=carry(e),mt=['F','R','X'].map(k=>{const c=cyr[k],gd=used(e.id,k,iso(ref)),gt=used(e.id,k);return yr?`<tr><td>${N[k]}</td><td>${g(c)}</td><td>${g(a[k])}</td><td>${g(gd)}</td><td><b>${g(c+a[k]-gd)}</b></td></tr>`:`<tr><td>${N[k]}</td><td>${g(c)}</td><td>${g(a[k]-pv[k])}</td><td>${g(a[k])}</td><td>${g(gd)}</td><td><b>${g(c+a[k]-gd)}</b></td><td>${g(c+pj[k]-gt)}</td></tr>`}).join('');
+  const sd=k=>cyr[k]+a[k]-used(e.id,k,iso(ref)),kc=(l,v,c)=>'<div style="--c:'+c+'"><small>'+l+'</small><b>'+v+'</b></div>',pk=kc('Giorni di presenza',fh(cc.dy.P),'#16a34a')+kc('Ore lavorate',fh(cc.o.P),'#0891b2')+kc('Saldo ferie (gg)',g(sd('F')),'#7c5cff')+kc('Saldo permessi (gg)',g(sd('R')+sd('X')),'#ea5f1c');
+  const cg0=e.cg||{},ceP=(h,c)=>hasC(c)?eur(h*c):'—';let totR=0;const pcR=(l,c,ks)=>{const cb=costBase(e,yr?'':String(mm)),gd=ks[0]=='F'?cb.gF:cb.gP,mtp=ks[0]=='F'?cb.mF:cb.mP,rs=mtp-gd;if(hasC(c))totR+=rs*c;return `<tr><td>${l}</td><td>${hasC(c)?eur(c):'—'}</td><td>${fh(mtp)}</td><td>${fh(gd)}</td><td>${fh(rs)}</td><td>${ceP(rs,c)}</td></tr>`},pc=pcR('Ferie',e.cost,['F'])+pcR('Permessi (ROL + Ex Fest)',e.costP,['R','X'])+`<tr class="tt"><td colspan="5">Totale costo ore residue (ferie + permessi)</td><td>${eur(totR)}</td></tr>`;
+  return `<div class="pg"><div class="ph"><img src="${logo}" alt=""><div class="pt"><h2>Digitmode – Presenze e maturazione</h2><span class="sub">${yr?'Tutto l\'anno '+Y:MN[mm]+' '+Y}</span></div></div>
+  <div class="emp"><div><small>Dipendente</small><b>${esc(e.name)}</b></div><div><small>Data assunzione</small><b>${e.hire}</b></div><div><small>Ore giornaliere</small><b>${e.hpd}</b></div></div>
+  <div class="pk">${pk}</div>
+  <h3>Presenze e assenze ${yr?'dell\'anno':'del mese'}</h3><table><tr><th>Tipo</th><th>Giorni</th><th>Ore</th></tr>${tr}</table>
+  <h3>Ferie, ROL ed ex festività (GG = giorni)</h3><table>${yr?'<tr><th></th><th>Residuo prec.</th><th>Maturato nell\'anno</th><th>Goduto nell\'anno</th><th>Saldo a fine anno</th></tr>':'<tr><th></th><th>Residuo prec.</th><th>Maturato nel mese</th><th>Maturato da inizio anno</th><th>Goduto da inizio anno</th><th>Saldo a fine mese</th><th>Proiezione saldo a fine anno</th></tr>'}${mt}</table>
+  <h3>Costo ferie e permessi</h3><table><tr><th></th><th>Costo orario (€/h)</th><th>Ore maturate</th><th>Ore godute</th><th>Ore residue</th><th>Costo ore residue</th></tr>${pc}</table>
+  <div class="pf"><span>Digitmode · Presenze e maturazione</span></div></div>`}).join('');
+ const t=document.title;document.title='Digitmode-maturazione-'+(yr?'anno':MN[mm])+'-'+Y;window.print();document.title=t}
+function askFmt(id,mm){
+ const lab=mm===''?'tutto l\'anno '+Y:MN[+mm]+' '+Y;
+ const ov=document.createElement('div');ov.className='fmt';
+ ov.innerHTML=`<div class="fmtb" role="dialog" aria-modal="true"><h4>Scarica ${lab}</h4><p>Vuoi scaricarlo in PDF o in Excel?</p><div class="fmtr"><button class="btn" data-f="pdf">PDF</button><button class="btn xl" data-f="xl">Excel</button></div><button class="btn c" data-f="">Annulla</button></div>`;
+ const close=f=>{document.removeEventListener('keydown',esc);ov.remove();DM='';const s=$('dm');if(s)s.value='';
+  if(f==='pdf')report(id,mm);else if(f==='xl')exportExcel(mm,id)};
+ const esc=ev=>{if(ev.key==='Escape')close('')};
+ document.addEventListener('keydown',esc);
+ ov.onclick=ev=>{if(ev.target===ov)close('');const b=ev.target.closest('[data-f]');if(b)close(b.dataset.f)};
+ document.body.appendChild(ov);const b=ov.querySelector('[data-f="pdf"]');if(b)b.focus()}
+function demo(){const y=now.getFullYear(),E=[['Giulia Bianchi','2015-06-01',{F:4,R:3,X:1}],['Marco Verdi','2019-09-16',{F:2,R:1,X:0}],['Sara Neri','2023-02-01',{F:3,R:0,X:0}],['Luca Gialli','2025-03-03',{F:0,R:0,X:0}],['Elena Rosa','2021-11-02',{F:6,R:2,X:1}]].map(([name,hire,cg])=>({id:uid(),name,hire,hpd:8,cg}));
+ const Rg=[[0,'F','04-06','04-10'],[1,'F','04-06','04-10'],[0,'F','08-10','08-21'],[1,'F','08-10','08-21'],[2,'F','08-10','08-21'],[3,'F','08-17','08-21'],[2,'F','12-21','12-24'],[0,'L','05-12','05-14'],[1,'M','02-10','02-10'],[2,'M','01-19','01-20'],[3,'M','03-16','03-18'],[1,'I','06-15','06-19'],[4,'MA','05-04','12-31'],[3,'A','06-02','06-02'],[1,'X','03-23','03-23'],[1,'X','10-19','10-19'],[0,'R','02-27','02-27'],[0,'R','07-03','07-03'],[2,'R','05-22','05-22'],[1,'R','09-04','09-04']],M=new Map(),ent=[];
+ Rg.forEach(([i,t,a,b])=>{for(let d=new Date(y,+a.slice(0,2)-1,+a.slice(3));iso(d)<=y+'-'+b;d.setDate(d.getDate()+1)){if(![0,6].includes(d.getDay()))M.set(E[i].id+iso(d),t)}});
+ E.forEach(e=>{for(let d=new Date(y,0,1);d.getFullYear()==y;d.setDate(d.getDate()+1)){if([0,6].includes(d.getDay()))continue;const ds=iso(d);if(ds<e.hire)continue;let t=M.get(e.id+ds);if(!t&&ds<=iso(now))t='P';if(t)ent.push({id:uid(),emp:e.id,date:ds,type:t,h:8})}});
+ E.forEach(e=>e.auto=iso(now));S={emps:E,ent,rules:{...DR}};save()}
+function empsY(){return S.emps.filter(e=>+String(e.hire).slice(0,4)<=Y)}
+function vAz(A){let tot={},rows='',W=0,WH=0,mF=0,mP=0,mFd=0,mPd=0;Object.keys(T).forEach(k=>tot[k]={h:0,d:0});
+ S.emps.filter(e=>!$('pt').value||e.hire<=$('pt').value).forEach(e=>{const s=stats(e.id);const b=balances(e),gp=k=>(b.find(x=>x.k==k)||{pm:0}).pm,w=wdays(e,$('pf').value,$('pt').value),h=e.hpd||8;W+=w;WH+=w*h;mF+=gp('F');mP+=gp('R')+gp('X');mFd+=gp('F')/h;mPd+=(gp('R')+gp('X'))/h;Object.keys(T).forEach(k=>{tot[k].h+=s[k].h;tot[k].d+=s[k].d});
+  const ab=['M','MA','L','I','A'].reduce((n,k)=>n+s[k].d,0);
+  rows+=`<tr><td>${esc(e.name)}</td><td data-l="Giorni lavorati">${fh(s.P.d)}</td><td data-l="Ore lavorate">${fh(s.P.h)}</td><td data-l="Giorni ferie">${fh(s.F.d)}</td><td data-l="Giorni permessi">${fh(s.R.d+s.X.d)}</td><td data-l="Giorni malattia">${fh(s.M.d)}</td><td data-l="Altre assenze">${fh(ab-s.M.d)}</td></tr>`});
+ const kp=kpiAgg(tot,W,WH,mF,mP,mFd,mPd,1);
+ A.innerHTML=bkNote()+`<div class="kp k3 kd"><div><span>Giorni lavorati</span>${kp[0]}</div><div><span>Ore lavorate</span>${kp[1]}</div><div><span>Giorni di ferie</span>${kp[2]}</div><div><span>Giorni malattia</span>${kp[3]}</div><div><span>Giorni permessi</span>${kp[4]}</div><div><span>Altre assenze</span>${kp[5]}</div></div>
+ <div class="card"><h2>Riepilogo periodo <span class="nw">${$('pf').value}</span> → <span class="nw">${$('pt').value}</span></h2><div class="tw"><table class="rs"><tr><th>Dipendente</th><th>Giorni lavorati</th><th>Ore lavorate</th><th>Giorni ferie</th><th>Giorni permessi</th><th>Giorni malattia</th><th>Altre assenze</th></tr>${rows}</table></div></div>`}
+// Percentuali nei riquadri del Dipendente: presenza/malattia sui giorni lavorabili fino a oggi; ferie e permessi sulla maturazione dell'anno.
+const fd=n=>n.toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2});
+function wdays(e,f,t){const a=f>e.hire?f:e.hire,z=t<iso(now)?t:iso(now);let n=0;if(a<=z)for(let d=new Date(a+'T12:00:00');iso(d)<=z;d.setDate(d.getDate()+1))if(lavorativo(d))n++;return n}
+function pcb(v,den,cap){if(!(den>0))return'<em class="pc"><i style="width:0"></i></em><small>Percentuale non calcolabile</small>';const p=v/den*100;return'<em class="pc"><i style="width:'+Math.min(100,p)+'%"></i></em><small><strong>'+fd(p)+'%</strong> '+cap+'</small>'}
+function kpiPct(e,s,b,f,t,fe){const wd=wdays(e,f,t),h=e.hpd||8,g=k=>(b.find(x=>x.k==k)||{pm:0}).pm,mF=g('F'),mP=g('R')+g('X');
+ return[pcb(s.P.d,wd,'dei '+fh(wd)+' gg lavorabili finora'),pcb(s.P.h,wd*h,'delle '+fh(wd*h)+' h lavorabili finora'),pcb(s.F.h,mF,'su '+fd(mF/h)+' gg di ferie maturabili nell\'anno'),pcb(s.M.d,wd,'dei '+fh(wd)+' gg lavorabili finora'),pcb(s.R.h+s.X.h,mP,'su '+fd(mP/h)+' gg di permessi ROL maturabili nell\'anno'),pcb(s.MA.d+s.L.d+s.I.d+s.A.d,wd,'dei '+fh(wd)+' gg lavorabili finora')]}
+function pcz(v,den,cap,tot){if(!(den>0))return'<b>—</b><em class="pc"><i style="width:0"></i></em><small><strong>'+tot+'</strong> percentuale non calcolabile</small>';const p=v/den*100;return'<b>'+fd(p)+'%</b><em class="pc"><i style="width:'+Math.min(100,p)+'%"></i></em><small><strong>'+tot+'</strong> '+cap+'</small>'}
+// Riquadri di Azienda e Dipendente: in grande la percentuale, sotto la barra il totale e il valore di riferimento.
+function kpiAgg(s,wd,wh,mF,mP,mFd,mPd,az){const lav=' lavorabili finora',pr=n=>fh(n)+' gg',alt=s.MA.d+s.L.d+s.I.d+s.A.d;
+ return[pcz(s.P.d,wd,'dei '+pr(wd)+lav,pr(s.P.d)),pcz(s.P.h,wh,'delle '+fh(wh)+' h'+lav,fh(s.P.h)+' h'),pcz(s.F.h,mF,'su '+fd(mFd)+' gg di ferie maturabili nell\'anno',pr(s.F.d)),pcz(s.M.d,wd,'dei '+pr(wd)+lav,pr(s.M.d)),pcz(s.R.h+s.X.h,mP,'su '+fd(mPd)+' gg di permessi ROL maturabili nell\'anno',pr(s.R.d+s.X.d)),pcz(alt,wd,'dei '+pr(wd)+lav,pr(alt))]}
+function vDip(A){if(!empsY().find(e=>e.id==sel))sel=empsY()[0].id;const e=S.emps.find(x=>x.id==sel),b=balances(e),pf0=MM===''?Y+'-01-01':iso(new Date(Y,+MM,1)),pt0=MM===''?Y+'-12-31':iso(new Date(Y,+MM+1,0)),per=cnt(e,pf0,pt0),s=st(per),kp=kpiPct(e,s,b,pf0,pt0,per.fe);
+ const N={F:'Ferie',R:'ROL',X:'Ex Festività'},K=['F','R','X'],g=v=>fh(v/e.hpd);
+ const c0={F:0,R:0,X:0};
+ const g2=v=>(v/e.hpd).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2}),cg7='<colgroup><col class="c1">'+'<col>'.repeat(6)+'</colgroup>',cg6='<colgroup><col class="c1">'+'<col>'.repeat(5)+'</colgroup>';
+ let mat,matM;
+ if(MM===''){
+ let prev={F:0,R:0,X:0},tot={F:0,R:0,X:0},rows='';const rm={F:'',R:'',X:''};
+ MN.forEach((mn,m)=>{const end=new Date(Y,m+1,0,23),af=accr(e,end),cur=Y==now.getFullYear()&&m==now.getMonth(),fut=end>now,a=cur?accr(e,now):af;
+  const cells=K.map(k=>{const mt1=a[k]-prev[k],sd=c0[k]+a[k]-used(e.id,k,iso(cur?now:end));tot[k]+=af[k]-prev[k];rm[k]+=`<tr class="${cur?'cur':fut?'fut':''}"><td>${mn}</td><td>${g2(mt1)}</td><td class="${cl(sd)}"><b>${g2(sd)}</b></td></tr>`;return `<td class="g${k}">${g2(mt1)}</td><td class="g${k} ge ${cl(sd)}"><b>${g2(sd)}</b></td>`}).join('');
+  prev=af;rows+=`<tr class="${cur?'cur':fut?'fut':''}"><td class="mn">${mn}${cur?' · in corso':fut?' · previsione':''}</td>${cells}</tr>`});
+ mat=cg7+`<thead><tr><th rowspan="2" class="mn">Mese</th>${K.map(k=>`<th colspan="2" class="g${k} ge">${N[k]} (GG)</th>`).join('')}</tr>
+  <tr>${K.map(k=>`<th class="g${k}">Maturato</th><th class="g${k} ge">Residuo</th>`).join('')}</tr></thead>
+  <tbody>${rows}
+  <tr class="tt"><td class="mn">Totale maturato nell'anno</td>${K.map(k=>`<td class="g${k} ge" colspan="2"><b>${g2(tot[k])}</b></td>`).join('')}</tr></tbody>`;
+ matM=K.map(k=>`<section class="mb g${k}"><h3>${N[k]} (GG)</h3><table><colgroup><col class="c1"><col><col></colgroup><thead><tr><th>Mese</th><th>Maturato</th><th>Residuo</th></tr></thead><tbody>${rm[k]}<tr class="tt"><td>Totale anno</td><td><b>${g2(tot[k])}</b></td><td></td></tr></tbody></table></section>`).join('')+'<p class="mu mleg">Riga evidenziata: mese in corso · righe grigie: previsione.</p>';
+ }else{
+ const m=+MM,ref=Y==now.getFullYear()&&m==now.getMonth()?now:new Date(Y,m+1,0,23),a=accr(e,ref),pv=m?accr(e,new Date(Y,m,0,23)):{F:0,R:0,X:0},pj=accr(e,new Date(Y,11,31,23));
+ matM=K.map(k=>{const gd=used(e.id,k,iso(ref)),gt=used(e.id,k),sd=c0[k]+a[k]-gd,pr=c0[k]+pj[k]-gt,L=[['Maturato nel mese',a[k]-pv[k]],['Maturato da inizio anno',a[k]],['Goduto da inizio anno',gd],['Saldo a fine '+MN[m].toLowerCase(),sd,1],['Proiezione saldo fine anno',pr,1]];return `<section class="mb g${k}"><h3>${N[k]} (GG)</h3><dl>${L.map(([l,v,c])=>`<div><dt>${l}</dt><dd${c?` class="${cl(v)}"`:''}>${c?'<b>'+g2(v)+'</b>':g2(v)}</dd></div>`).join('')}</dl></section>`}).join('');
+ mat=cg6+`<thead><tr><th class="mn"></th><th>Maturato nel mese (GG)</th><th>Maturato da inizio anno (GG)</th><th class="ge">Goduto da inizio anno (GG)</th><th>Saldo a fine ${MN[m].toLowerCase()} (GG)</th><th>Proiezione saldo fine anno (GG)</th></tr></thead><tbody>`+K.map(k=>{const gd=used(e.id,k,iso(ref)),gt=used(e.id,k),sd=c0[k]+a[k]-gd,pr=c0[k]+pj[k]-gt;return `<tr><td class="mn g${k}">${N[k]}</td><td>${g2(a[k]-pv[k])}</td><td>${g2(a[k])}</td><td class="ge">${g2(gd)}</td><td class="${cl(sd)}"><b>${g2(sd)}</b></td><td class="${cl(pr)}"><b>${g2(pr)}</b></td></tr>`}).join('')+'</tbody>';
+ }
+
+ const hy=+e.hire.slice(0,4),ny=now.getFullYear(),yL=[];for(let y=hy;y<=Math.max(ny,Y);y++)yL.push(y);
+ let multi='';if(yL.length){let a1=yL.includes(MY1)?MY1:Math.max(hy,Y-2),a2=yL.includes(MY2)?MY2:Y;if(a1>a2)[a1,a2]=[a2,a1];
+  const T3={F:[0,0],R:[0,0],X:[0,0]};let mr='';
+  for(let y=a1;y<=a2;y++){const ac=accr(e,y==ny?now:new Date(y,11,31,23),y),cu=y==ny,fu=y>ny;
+   mr+=`<tr class="${cu?'cur':fu?'fut':''}"><td class="mn">${y}${cu?' · in corso':fu?' · previsione':''}</td>${K.map(k=>{const mt=ac[k],gd=used(e.id,k,'',y),sd=mt-gd;T3[k][0]+=mt;T3[k][1]+=gd;return `<td class="g${k}">${g2(mt)}</td><td class="g${k}">${g2(gd)}</td><td class="g${k} ge ${cl(sd)}"><b>${g2(sd)}</b></td>`}).join('')}</tr>`}
+  const yo=sv=>yL.map(y=>`<option ${y==sv?'selected':''}>${y}</option>`).join('');
+  multi=`<div class="card"><div class="row mh"><h2>Quadro multi-anno</h2><label>Dal<select id="my1">${yo(a1)}</select></label><label>Al<select id="my2">${yo(a2)}</select></label></div>
+  <div class="tw"><table class="mt my"><colgroup><col class="c1">${'<col>'.repeat(9)}</colgroup><thead><tr><th rowspan="2" class="mn">Anno</th>${K.map(k=>`<th colspan="3" class="g${k} ge">${N[k]} (GG)</th>`).join('')}</tr><tr>${K.map(k=>`<th class="g${k}">Maturato</th><th class="g${k}">Goduto</th><th class="g${k} ge">Saldo</th>`).join('')}</tr></thead><tbody>${mr}<tr class="tt"><td class="mn">Totale ${a1==a2?a1:a1+'–'+a2}</td>${K.map(k=>{const sd=T3[k][0]-T3[k][1];return `<td class="g${k}"><b>${g2(T3[k][0])}</b></td><td class="g${k}"><b>${g2(T3[k][1])}</b></td><td class="g${k} ge ${cl(sd)}"><b>${g2(sd)}</b></td>`}).join('')}</tr></tbody></table></div>
+</div>`}
+ const ref2=MM===''?new Date(Y,11,31,23):new Date(Y,+MM+1,0,23),to2=iso(ref2),ac2=accr(e,ref2),cF=hasC(e.cost)?+e.cost:null,cP=hasC(e.costP)?+e.costP:null,ce=(h,c)=>c==null?'—':eur(h*c),
+  cRow=(l,c,mt,gd)=>`<tr><td>${l}</td><td data-l="Costo orario">${c==null?'—':eur(c)}</td><td data-l="Ore maturate">${fh(mt)}</td><td data-l="Ore godute">${fh(gd)}</td><td data-l="Ore residue">${fh(mt-gd)}</td><td data-l="Costo ore residue">${ce(mt-gd,c)}</td></tr>`,
+  cb=costBase(e,MM),mF2=cb.mF,mP2=cb.mP,gF=cb.gF,gP=cb.gP,totRes=(cF==null?0:(mF2-gF)*cF)+(cP==null?0:(mP2-gP)*cP),
+  costT=`<h3 style="margin:18px 0 8px">Costo ferie e permessi <span class="mu" style="font-weight:400">(${MM===''?'anno '+Y:MN[+MM].toLowerCase()+' '+Y})</span></h3><div class="tw"><table class="rs"><tr><th></th><th>Costo orario (€/h)</th><th>Ore maturate</th><th>Ore godute</th><th>Ore residue</th><th>Costo ore residue</th></tr>${cRow('Ferie',cF,mF2,gF)}${cRow('Permessi (ROL + Ex Fest)',cP,mP2,gP)}<tr class="tot"><td colspan="5">Totale costo ore residue (ferie + permessi)</td><td data-l="Totale costo ore residue"><b>${eur(totRes)}</b></td></tr></table></div>${cF==null&&cP==null?'<p class="mu mleg">Imposta il costo orario ferie e permessi in Anagrafica per vedere i costi.</p>':''}`;
+ A.innerHTML=`<div class="card row"><label>Dipendente<select id="ds">${empsY().map(x=>`<option value="${x.id}" ${x.id==sel?'selected':''}>${esc(x.name)}</option>`).join('')}</select></label><span class="mu">Assunto il ${e.hire} · ${e.hpd} h/giorno${hasC(e.cost)?' · ferie '+eur(e.cost)+'/h':''}${hasC(e.costP)?' · permessi '+eur(e.costP)+'/h':''}</span></div>
+ <div class="kp k3 kd"><div><span>Giorni di presenza</span><b>${fh(s.P.d)}</b>${kp[0]}</div><div><span>Ore lavorate</span><b>${fh(s.P.h)}</b>${kp[1]}</div><div><span>Ferie godute</span><b>${fh(s.F.d)} gg</b>${kp[2]}</div><div><span>Malattia</span><b>${fh(s.M.d)} gg</b>${kp[3]}</div><div><span>Permessi goduti</span><b>${fh(s.R.d+s.X.d)} gg</b>${kp[4]}</div><div><span>Altre assenze</span><b>${fh(s.MA.d+s.L.d+s.I.d+s.A.d)} gg</b>${kp[5]}</div></div>
+ <div class="card"><div class="row mh"><h2>Maturazione ${Y}</h2><label>Mese<select id="mm"><option value="">Tutti i mesi</option>${MN.map((m,i)=>`<option value="${i}" ${MM!==''&&+MM===i?'selected':''}>${m}</option>`).join('')}</select></label></div><div class="tw mtw desk"><table class="mt${MM===''?'':' md'}">${mat}</table></div><div class="mtm">${matM}</div>${costT}</div>
+ ${multi}
+ <div class="card"><h2>Dettaglio periodo (fino a oggi)</h2><div class="tw"><table><tr><th>Tipo</th><th>Giorni</th><th>Ore</th></tr>${Object.keys(T).filter(k=>!['MA','L','I'].includes(k)||per.o[k]>0).map(k=>`<tr><td>${T[k]}</td><td>${fh(per.dy[k])}</td><td>${fh(per.o[k])}</td></tr>`).join('')}<tr class="tot"><td><b>Totale fino a oggi</b></td><td><b>${fh(per.tot-per.fe)}</b></td><td><b>${fh(Object.keys(T).reduce((t,k)=>t+per.o[k],0))}</b></td></tr></table></div></div>
+ <div class="card dl"><div class="dlc"><label>Maturazione ferie, ROL ed ex festività da scaricare<select id="dm"><option value="" ${DM===''?'selected':''}>Scegli...</option><option value="y" ${DM==='y'?'selected':''}>Tutto l'anno ${Y}</option>${MN.map((m,i)=>`<option value="${i}" ${DM!==''&&DM!=='y'&&+DM===i?'selected':''}>${m} ${Y}</option>`).join('')}</select></label></div></div>
+ <div class="card"><h2>Quadro annuale ${Y}</h2>${legend()}<div class="tw gdesk"><table class="gr"><tr><th>Mese</th>${dh()}</tr>${MN.map((m,i)=>`<tr><td>${m}</td>${grid(e.id,i)}</tr>`).join('')}</table></div><div class="gmob"><div class="tw"><table class="gr gt"><tr><th></th>${MN.map(m=>`<th>${m.slice(0,3)}</th>`).join('')}</tr>${gridT(e.id)}</table></div></div></div>`;
+ if($('my1')){$('my1').onchange=ev=>{MY1=+ev.target.value;render()};$('my2').onchange=ev=>{MY2=+ev.target.value;render()}}$('dm').onchange=ev=>{DM=ev.target.value;if(DM!==''){MM=DM==='y'?'':DM;render();askFmt(e.id,DM==='y'?'':DM)}};$('mm').onchange=ev=>{MM=ev.target.value;render()};
+ $('ds').onchange=ev=>{sel=ev.target.value;render()}}
+// Ricalcola il giorno: le ore non coperte da assenze diventano presenza; senza assenze il giorno torna a presenza intera.
+function balDay(em,ds){const np=S.ent.filter(a=>a.emp==em.id&&a.date==ds&&a.type!='P');
+ if(!np.length){fixDay(em,ds,true);S.ent.filter(a=>a.emp==em.id&&a.date==ds&&a.type=='P').forEach(a=>a.h=em.hpd);return}
+ S.ent=S.ent.filter(a=>!(a.emp==em.id&&a.date==ds&&a.type=='P'));
+ const rest=Math.round((em.hpd-np.reduce((t,a)=>t+a.h,0))*100)/100;
+ if(rest>1e-9&&lavorativo(new Date(ds+'T12:00:00')))S.ent.push({id:uid(),emp:em.id,date:ds,type:'P',h:rest})}
+function dropEnt(old){S.ent=S.ent.filter(a=>a!==old);if(old.type=='P')return;const em=S.emps.find(x=>x.id==old.emp);if(!em)return;balDay(em,old.date)}
+function vReg(A){const e0=empsY().find(e=>e.id==sel)||empsY()[0];sel=e0.id;
+ const y0=Y+'-01-01',y1=Y+'-12-31',dd=Y==now.getFullYear()?iso(now):iso(new Date(Y,now.getMonth(),Math.min(now.getDate(),new Date(Y,now.getMonth()+1,0).getDate())));
+ if(REG&&!S.ent.some(a=>a.id==REG&&a.emp==sel))REG=null;
+ const list=S.ent.filter(a=>a.emp==sel&&a.date.startsWith(Y)).sort((a,b)=>b.date.localeCompare(a.date)),gm={};list.forEach(a=>{const k=a.date.slice(0,7);(gm[k]=gm[k]||[]).push(a)});const ks=Object.keys(gm).sort().reverse(),eo=REG?S.ent.find(a=>a.id==REG&&a.emp==sel):null,rw=a=>`<tr><td>${a.date}</td><td>${T[a.type]}</td><td>${fh(a.h)}</td><td><button class="btn g mod" data-m="${a.id}">Modifica</button><button class="btn g" data-d="${a.id}">✕</button></td></tr>`;
+ A.innerHTML=`<div class="card"><h2>Registro assenze</h2><div class="row">
+ <label>Dipendente<select id="re">${empsY().map(x=>`<option value="${x.id}" ${x.id==sel?'selected':''}>${esc(x.name)}</option>`).join('')}</select></label>
+ <label>Tipo<select id="rt">${['F','R','M','A','P'].concat(eo&&!['F','R','M','A','P'].includes(eo.type)?[eo.type]:[]).map(k=>`<option value="${k}"${eo&&eo.type==k?' selected':''}>${k=='P'?'Presenza (correzione manuale)':T[k]}</option>`).join('')}</select></label>
+ <label>Dal<input type="date" id="rf" value="${eo?eo.date:dd}" min="${y0}" max="${y1}"></label><label>Al<input type="date" id="rz" value="${eo?eo.date:dd}" min="${y0}" max="${y1}"></label>
+ <label>Ore al giorno<input type="number" id="rh" value="${eo?eo.h:8}" min="0" max="24" step="any" inputmode="decimal"></label>
+ <button class="btn" id="ra">${eo?'Salva modifiche':'Aggiungi'}</button>${eo?'<button class="btn g" id="rx">Annulla</button>':''}</div></div>
+ ${ks.length?ks.map((k,i)=>`<div class="card"><h2>${i?'':'Ultimo mese · '}${MN[+k.slice(5)-1]} ${k.slice(0,4)}</h2><div class="tw"><table class="lv"><tr><th>Data</th><th>Tipo</th><th>Ore</th><th></th></tr>${gm[k].map(rw).join('')}</table></div></div>`).join(''):'<div class="card"><h2>Ultimo mese</h2>Nessuna voce registrata.</div>'}`;
+ $('re').onchange=ev=>{sel=ev.target.value;REG=null;render()};
+ $('rh').oninput=ev=>limH(ev.target); if($('rx'))$('rx').onclick=()=>{REG=null;render()};
+ A.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{REG=b.dataset.m;render();window.scrollTo({top:0,behavior:'smooth'})});
+ $('ra').onclick=()=>{const f=$('rf').value,z=$('rz').value,em=S.emps.find(x=>x.id==sel),hd=em.hpd;if(!f||!z||z<f)return alert('Controlla le date');if(f<y0||z>y1)return alert('Le date devono essere dentro l\'anno '+Y+' scelto nel filtro Anno');
+  const tp=$('rt').value,oi=+$('rh').value;if($('rh').value.trim()==='')return toast('Inserisci le ore al giorno','err');if(!okH(oi))return toast('Le ore devono essere maggiori di 0 e al massimo 24','err');
+  const h=Math.min(oi,hd),r2=v=>Math.round(v*100)/100,sm=L=>L.reduce((t,a)=>t+a.h,0);let wk=false;
+  for(let d=new Date(f+'T12:00:00');iso(d)<=z;d.setDate(d.getDate()+1))if(![0,6].includes(d.getDay())){wk=true;break}
+  if(!wk)return alert('Scegli almeno un giorno lavorativo (da lunedì a venerdì)');
+  const bak=JSON.stringify(S.ent),old=REG?S.ent.find(a=>a.id==REG&&a.emp==sel):null;if(old)S.ent=S.ent.filter(a=>a!==old);
+  // Le ore si aggiungono allo stesso giorno, a mano: stessa voce = si aggiorna, voci diverse = restano insieme (es. 4 h presenza + 4 h permesso).
+  // Solo la presenza intera automatica del giorno viene tolta quando inserisci le ore a mano; una voce che copre tutte le ore del giorno sostituisce le altre.
+  const plan=[];let big=null;
+  for(let d=new Date(f+'T12:00:00');iso(d)<=z;d.setDate(d.getDate()+1)){if([0,6].includes(d.getDay()))continue;const ds=iso(d),oth=S.ent.filter(a=>a.emp==sel&&a.date==ds);
+   const aut=tp!='P';
+   const keep=h>=hd?[]:oth.filter(a=>a.type!=tp&&!(aut&&a.type=='P'));
+   const L=[...keep.map(a=>({type:a.type,h:a.h})),{type:tp,h}];
+   if(!big&&sm(L)>hd+1e-9)big={ds,t:r2(sm(L))};
+   // Le ore che restano nella giornata diventano presenza in automatico (solo giorni lavorativi).
+   if(aut&&lavorativo(d)&&sm(L)<hd-1e-9)L.push({type:'P',h:r2(hd-sm(L))});
+   plan.push({oth,ds,L,sost:h>=hd&&oth.some(a=>a.type!=tp&&a.type!='P')})}
+  if(big){S.ent=JSON.parse(bak);return alert('Il '+big.ds.split('-').reverse().join('/')+' arriverebbe a '+fh(big.t)+' ore, ma il giorno ne ha '+fh(hd)+'. Riduci le ore oppure modifica o elimina l\'altra voce di quel giorno.')}
+  REG=null;let nw=0,gia=0,rp=0;const fixOld=()=>{if(old&&old.type!='P'&&!plan.some(p=>p.ds==old.date))balDay(em,old.date)};
+  plan.forEach(({oth,ds,L,sost})=>{
+   if(L.length==oth.length&&L.every(x=>oth.some(a=>a.type==x.type&&Math.abs(a.h-x.h)<1e-9))){gia++;return}
+   if(sost)rp++;
+   S.ent=S.ent.filter(a=>!oth.includes(a));L.forEach(x=>S.ent.push({id:uid(),emp:sel,date:ds,type:x.type,h:x.h}));nw++});
+  fixOld();
+  if(!nw){if(old){save();render()}return toast(gia>1?'Dati già inseriti: questi '+gia+' giorni sono già registrati':'Dato già inserito: questo giorno è già registrato','warn')}
+  save();render();if(old)toast('✓ Voce modificata');else if(gia)toast(nw+' giorni salvati · '+gia+' già inseriti','warn');else if(rp)toast(rp+(rp>1?' giorni':' giorno')+': assenza precedente sostituita','warn')};
+ A.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{if(!confirm('Vuoi eliminare questa voce?'))return;const old=S.ent.find(a=>a.id==b.dataset.d);if(old)dropEnt(old);if(REG==b.dataset.d)REG=null;save();render()})}
+const CFO=[1,0,5,7,9,13,15,17,19,21,2,4,18,20,11,3,6,8,12,14,16,10,22,25,24,23],CFD=[1,0,5,7,9,13,15,17,19,21];
+function cfCtl(s){let t=0;for(let i=0;i<15;i++){const c=s[i],dg=c>='0'&&c<='9',d=dg?+c:c.charCodeAt(0)-65;t+=i%2?d:(dg?CFD[d]:CFO[d])}return String.fromCharCode(65+t%26)}
+const cfSex=cf=>+cf.slice(9,11).replace(/[LMNPQRSTUV]/g,c=>'LMNPQRSTUV'.indexOf(c))>40?'F':'M';
+function cfCheck(cf,sx){if(!CFOK.test(cf))return'Codice fiscale non valido: deve avere 16 caratteri nel formato corretto (es. RSSMRA85T10A562S).';
+ if(cfCtl(cf)!==cf[15])return'Codice fiscale non valido: il carattere di controllo non corrisponde. Controlla che sia scritto correttamente.';
+ if(sx&&sx!==cfSex(cf))return'Il sesso indicato non coincide con quello del codice fiscale ('+(cfSex(cf)=='F'?'Femmina':'Maschio')+').';return''}
+function vAnag(A){const ed=EDIT?S.emps.find(x=>x.id==EDIT):null;if(!ed)EDIT=null;
+ const nm=ed?ed.name.split(' ')[0]:'',cg=ed?ed.name.split(' ').slice(1).join(' '):'',c=ed&&ed.cg||{};
+ A.innerHTML=`<div class="two"><div class="card"><h2>${ed?'Modifica dipendente':'Nuovo dipendente'}</h2><div class="form">
+ <label>Nome<input id="an" value="${esc(nm)}"></label><label>Cognome<input id="ac" value="${esc(cg)}"></label>
+ <label>Codice fiscale<input id="af" maxlength="16" autocomplete="off" style="text-transform:uppercase" value="${esc(ed&&ed.cf||'')}"></label>
+ <label>Sesso<select id="as"><option value="">—</option><option value="M" ${ed&&ed.sex=='M'?'selected':''}>Maschio</option><option value="F" ${ed&&ed.sex=='F'?'selected':''}>Femmina</option></select></label>
+ <label>Data assunzione<input type="date" id="ah" value="${ed?ed.hire:''}"></label><label>Ore/giorno<input type="number" id="ap" value="${ed?ed.hpd:8}" step="0.25" min="0.25" max="24" inputmode="decimal"></label>
+ <label>Costo orario ferie (€/h)<input type="number" id="ak" min="0" step="0.01" value="${ed&&hasC(ed.cost)?ed.cost:''}"></label>
+ <label>Costo orario permessi (€/h)<input type="number" id="akp" min="0" step="0.01" value="${ed&&hasC(ed.costP)?ed.costP:''}"></label>
+ <button class="btn" id="aa">${ed?'Salva modifiche':'Aggiungi'}</button>${ed?'<button class="btn g" id="ae">Annulla</button>':''}</div></div>
+ <div class="card"><h2>Dipendenti</h2><div class="tw"><table class="rs"><tr><th>Nome e cognome</th><th>Codice fiscale</th><th>Sesso</th><th>Assunzione</th><th>Ore/gg</th><th>Costo orario ferie</th><th>Costo orario permessi</th><th></th></tr>${S.emps.map(e=>`<tr><td>${esc(e.name)}</td><td data-l="Codice fiscale">${esc(e.cf||'—')}</td><td data-l="Sesso">${e.sex||'—'}</td><td data-l="Assunzione">${e.hire}</td><td data-l="Ore/gg">${e.hpd}</td><td data-l="Costo orario ferie">${hasC(e.cost)?eur(e.cost):'—'}</td><td data-l="Costo orario permessi">${hasC(e.costP)?eur(e.costP):'—'}</td><td class="ac"><button class="btn g" data-e="${e.id}">Modifica</button> <button class="btn g" data-x="${e.id}">Elimina</button></td></tr>`).join('')}</table></div></div></div>`;
+ $('ap').oninput=ev=>limH(ev.target);
+ $('aa').onclick=()=>{const n1=$('an').value.trim(),n2=$('ac').value.trim(),h=$('ah').value,cf=$('af').value.replace(/\s+/g,'').toUpperCase(),co=$('ak').value,cp=$('akp').value;let sx=$('as').value;
+  if(!n1||!n2||!h)return alert('Nome, cognome e data assunzione sono obbligatori');
+  if(cf){const er=cfCheck(cf,sx);if(er)return alert(er);
+   if(S.emps.some(x=>x.cf===cf&&x.id!=EDIT))return alert('Esiste già un dipendente con questo codice fiscale.');if(!sx)sx=cfSex(cf)}
+  if(co!==''&&!(+co>=0))return alert('Il costo orario ferie deve essere un numero positivo');
+  if(cp!==''&&!(+cp>=0))return alert('Il costo orario permessi deve essere un numero positivo');
+  if(!okH(+$('ap').value))return toast('Le ore giornaliere devono essere maggiori di 0 e al massimo 24','err');
+  const rec={name:n1+' '+n2,hire:h,hpd:+$('ap').value,cf,sex:sx,cost:co===''?'':+co,costP:cp===''?'':+cp};
+  if(ed)Object.assign(ed,rec);else S.emps.push({id:uid(),...rec});
+  EDIT=null;autoFill();save();render()};
+ if($('ae'))$('ae').onclick=()=>{EDIT=null;render()};
+ A.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>{EDIT=b.dataset.e;render();try{scrollTo(0,0)}catch(x){}});
+ A.querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{if(confirm('Eliminare il dipendente e le sue voci?')){if(EDIT==b.dataset.x)EDIT=null;S.emps=S.emps.filter(e=>e.id!=b.dataset.x);S.ent=S.ent.filter(a=>a.emp!=b.dataset.x);save();render()}})}
+
+// ---- BACKUP ----
+const LB='presenze_lastbackup';let bkSess=false;
+function lastBackup(){try{const v=localStorage.getItem(LB);return v?new Date(v):null}catch(e){return null}}
+function bkStatus(){const el=$('bs');if(!el)return;const l=lastBackup();
+ el.textContent='Dati attuali: '+S.emps.length+' dipendenti, '+S.ent.length+' voci. '+(l?'Ultimo backup esportato: '+l.toLocaleString('it-IT')+'.':'Nessun backup esportato da questo browser.')}
+function bkNote(){const l=lastBackup(),old=!bkSess&&(!l||(Date.now()-l)>7*864e5);
+ return old?'<div class="card warn bkw">⚠ '+(l?'L\'ultimo backup risale al '+l.toLocaleDateString('it-IT'):'Non hai ancora esportato nessun backup')+'. Vai in <b>Impostazioni → Backup dei dati</b> ed esportalo per non perdere i dati.</div>':''}
+function exportBackup(){const d=new Date(),p=n=>String(n).padStart(2,'0');
+ const payload={app:'Digitmode-Presenze',format:1,exportedAt:d.toISOString(),data:{emps:S.emps,ent:S.ent,rules:S.rules}};
+ const blob=new Blob([JSON.stringify(payload,null,1)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='Digitmode-backup-'+iso(d)+'_'+p(d.getHours())+p(d.getMinutes())+'.json';document.body.appendChild(a);a.click();
+ setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},2000);
+ bkSess=true;document.querySelectorAll('.bkw').forEach(x=>x.remove());try{localStorage.setItem(LB,d.toISOString())}catch(e){}}
+function cleanBackup(raw){const D=raw&&raw.data?raw.data:raw;
+ if(!D||!Array.isArray(D.emps)||!Array.isArray(D.ent))throw new Error('il file non è un backup di Digitmode Presenze.');
+ const okD=v=>typeof v=='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&!isNaN(new Date(v)),fin=v=>v!==''&&v!==null&&Number.isFinite(+v);
+ const ids=new Set(),emps=D.emps.map((e,i)=>{
+  if(!e||e.id==null||String(e.id)==='')throw new Error('dipendente n. '+(i+1)+' senza identificativo.');
+  const id=String(e.id),name=String(e.name==null?'':e.name).trim();
+  if(!name)throw new Error('dipendente n. '+(i+1)+' senza nome.');
+  if(!okD(e.hire))throw new Error('dipendente "'+name+'": data di assunzione non valida.');
+  if(ids.has(id))throw new Error('dipendente "'+name+'" duplicato.');ids.add(id);
+  const c=e.cg||{};
+  const cf0=String(e.cf==null?'':e.cf).replace(/\s+/g,'').toUpperCase();
+  if(cf0&&!CFOK.test(cf0))throw new Error('dipendente "'+name+'": codice fiscale non valido.');
+  return{id,name,hire:e.hire,hpd:fin(e.hpd)&&okH(+e.hpd)?+e.hpd:8,cg:{F:fin(c.F)?+c.F:0,R:fin(c.R)?+c.R:0,X:fin(c.X)?+c.X:0},cf:cf0,sex:['M','F'].includes(e.sex)?e.sex:'',cost:fin(e.cost)&&+e.cost>=0?+e.cost:'',costP:fin(e.costP)&&+e.costP>=0?+e.costP:'',auto:okD(e.auto)?e.auto:''}});
+ const ent=D.ent.map((a,i)=>{
+  if(!a||!ids.has(String(a.emp)))throw new Error('voce n. '+(i+1)+' collegata a un dipendente inesistente.');
+  if(!okD(a.date))throw new Error('voce n. '+(i+1)+': data non valida.');
+  if(!T[a.type])throw new Error('voce n. '+(i+1)+': tipo "'+a.type+'" sconosciuto.');
+  if(!fin(a.h)||!okH(+a.h))throw new Error('voce n. '+(i+1)+': ore non valide (devono essere tra 0 e 24).');
+  return{id:a.id!=null&&String(a.id)!==''?String(a.id):uid(),emp:String(a.emp),date:a.date,type:a.type,h:+a.h}});
+ const R=D.rules||{},rules={};Object.keys(DR).forEach(k=>rules[k]=fin(R[k])?+R[k]:DR[k]);if(!fin(R.p1)){rules.y1=DR.y1;rules.y2=DR.y2}
+ return{emps,ent,rules}}
+function importBackup(file){const r=new FileReader();
+ r.onerror=()=>alert('Importazione annullata: impossibile leggere il file.');
+ r.onload=()=>{let raw,D;
+  try{raw=JSON.parse(r.result)}catch(e){return alert('Importazione annullata: il file non è un JSON valido.')}
+  try{D=cleanBackup(raw)}catch(e){return alert('Importazione annullata: '+e.message)}
+  if(!confirm('Il backup contiene '+D.emps.length+' dipendenti e '+D.ent.length+' voci.\n\nI dati attuali ('+S.emps.length+' dipendenti, '+S.ent.length+' voci) verranno SOSTITUITI.\n\nContinuare?'))return;
+  try{localStorage.setItem('presenze_v2_prima_import',JSON.stringify(S))}catch(e){}
+  S={emps:D.emps,ent:D.ent,rules:D.rules,rv:10,fv:1};syncR();normEnt();autoFill();
+  if(!save())return;
+  sel=null;view=S.emps.length?'az':'anag';render();alert('Backup importato correttamente.')};
+ r.readAsText(file)}
+// ---- EXCEL (.xlsx): generato direttamente nel browser, senza librerie e senza internet ----
+const XE=t=>String(t).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g,'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const colL=i=>{let t='';for(i++;i>0;i=Math.floor((i-1)/26))t=String.fromCharCode(65+(i-1)%26)+t;return t};
+const serial=d=>Math.round((Date.UTC(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8,10))-Date.UTC(1899,11,30))/864e5);
+const XS={n2:2,date:3,eur:4};
+function cellXml(c,r,ci,head){const ref=colL(ci)+(r+1);
+ if(c==null||c==='')return head?`<c r="${ref}" s="1"/>`:'';
+ if(head)return `<c r="${ref}" s="1" t="inlineStr"><is><t>${XE(c)}</t></is></c>`;
+ if(typeof c=='string')return `<c r="${ref}" t="inlineStr"><is><t xml:space="preserve">${XE(c)}</t></is></c>`;
+ if(typeof c=='number')return `<c r="${ref}"><v>${c}</v></c>`;
+ if(c.d)return `<c r="${ref}" s="3"><v>${serial(c.d)}</v></c>`;
+ return `<c r="${ref}" s="${XS[c.s]||0}">${c.f?`<f>${XE(c.f)}</f>`:''}<v>${c.v}</v></c>`}
+function sheetXml(sh){const R=sh.rows,nc=Math.max(...R.map(r=>r.length));
+ const w=sh.widths||[],cols=Array.from({length:nc},(_,i)=>`<col min="${i+1}" max="${i+1}" width="${w[i]||16}" customWidth="1"/>`).join('');
+ const pane=sh.freeze?`<pane xSplit="1" ySplit="1" topLeftCell="B2" activePane="bottomRight" state="frozen"/>`:'';
+ return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0">${pane}</sheetView></sheetViews><sheetFormatPr defaultRowHeight="15"/><cols>${cols}</cols><sheetData>${R.map((r,ri)=>`<row r="${ri+1}">${r.map((c,ci)=>cellXml(c,ri,ci,ri===0&&sh.head)).join('')}</row>`).join('')}</sheetData>${sh.filter?`<autoFilter ref="A1:${colL(nc-1)}${R.length}"/>`:''}</worksheet>`}
+const XSTY='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="3"><numFmt numFmtId="164" formatCode="dd/mm/yyyy"/><numFmt numFmtId="165" formatCode="#,##0.00"/><numFmt numFmtId="166" formatCode="#,##0.00 &quot;€&quot;"/></numFmts><fonts count="2"><font><sz val="10"/><name val="Arial"/></font><font><b/><sz val="10"/><name val="Arial"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFDE3D3"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left/><right/><top/><bottom style="thin"><color rgb="FFB0B6C4"/></bottom><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="5"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf><xf numFmtId="165" fontId="0" fillId="0" borderId="0" xfId="0" applyFont="1" applyNumberFormat="1"/><xf numFmtId="164" fontId="0" fillId="0" borderId="0" xfId="0" applyFont="1" applyNumberFormat="1"/><xf numFmtId="166" fontId="0" fillId="0" borderId="0" xfId="0" applyFont="1" applyNumberFormat="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+const CRCT=(()=>{const t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+const crc32=b=>{let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=CRCT[(c^b[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0};
+function zipStore(files,mime){const te=new TextEncoder(),parts=[],cd=[],u16=v=>[v&255,v>>8&255],u32=v=>[v&255,v>>8&255,v>>16&255,v>>>24&255];let off=0;
+ files.forEach(([name,txt])=>{const nb=te.encode(name),d=te.encode(txt),crc=crc32(d);
+  const lh=new Uint8Array([0x50,0x4b,3,4,...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(crc),...u32(d.length),...u32(d.length),...u16(nb.length),...u16(0)]);
+  parts.push(lh,nb,d);
+  cd.push(new Uint8Array([0x50,0x4b,1,2,...u16(20),...u16(20),...u16(0x0800),...u16(0),...u16(0),...u16(0x21),...u32(crc),...u32(d.length),...u32(d.length),...u16(nb.length),...u16(0),...u16(0),...u16(0),...u16(0),...u32(0),...u32(off)]),nb);
+  off+=lh.length+nb.length+d.length});
+ const cs=cd.reduce((n,x)=>n+x.length,0),end=new Uint8Array([0x50,0x4b,5,6,0,0,0,0,...u16(files.length),...u16(files.length),...u32(cs),...u32(off),0,0]);
+ return new Blob([...parts,...cd,end],{type:mime})}
+function buildXlsx(sheets){const H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',RT='http://schemas.openxmlformats.org/officeDocument/2006/relationships',PK='http://schemas.openxmlformats.org/package/2006/relationships',CT='application/vnd.openxmlformats-officedocument.spreadsheetml.';
+ return zipStore([
+  ['[Content_Types].xml',H+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="'+CT+'sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="'+CT+'styles+xml"/>'+sheets.map((s,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="${CT}worksheet+xml"/>`).join('')+'</Types>'],
+  ['_rels/.rels',H+`<Relationships xmlns="${PK}"><Relationship Id="rId1" Type="${RT}/officeDocument" Target="xl/workbook.xml"/></Relationships>`],
+  ['xl/workbook.xml',H+`<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="${RT}"><bookViews><workbookView/></bookViews><sheets>${sheets.map((s,i)=>`<sheet name="${XE(s.name)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')}</sheets><calcPr fullCalcOnLoad="1"/></workbook>`],
+  ['xl/_rels/workbook.xml.rels',H+`<Relationships xmlns="${PK}">${sheets.map((s,i)=>`<Relationship Id="rId${i+1}" Type="${RT}/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')}<Relationship Id="rId${sheets.length+1}" Type="${RT}/styles" Target="styles.xml"/></Relationships>`],
+  ['xl/styles.xml',XSTY],
+  ...sheets.map((s,i)=>[`xl/worksheets/sheet${i+1}.xml`,H+sheetXml(s).replace(/^<\?xml[^>]*\?>/,'')])],CT+'sheet')}
+function exportExcel(mm,empId){try{
+ const f0=mm===''?Y+'-01-01':Y+'-'+p2(+mm+1)+'-01',f1=mm===''?Y+'-12-31':Y+'-'+p2(+mm+1)+'-31';
+ const sub=S.emps.filter(e=>!empId||e.id==empId),ent=sub.flatMap(e=>entsIn(e,f0,f1).map(a=>({a,e}))).sort((x,y)=>x.e.name.localeCompare(y.e.name,'it')||x.a.date.localeCompare(y.a.date));
+ const reg=[['Dipendente','Data','Mese','Tipo','Ore','Ore/giorno','Costo orario ferie (€/h)','Costo orario permessi (€/h)','Giorni']];
+ ent.forEach(({a,e})=>{const ri=reg.length+1;reg.push([e.name,{d:a.date},MN[+a.date.slice(5,7)-1],T[a.type],{v:a.h,s:'n2'},e.hpd,hasC(e.cost)?{v:+e.cost,s:'eur'}:'',hasC(e.costP)?{v:+e.costP,s:'eur'}:'',{f:`E${ri}/F${ri}`,v:a.h/e.hpd,s:'n2'}])});
+ const RL={fa:'Ferie annue (giorni)',f:'Ferie ogni mese (ore)',ra:'ROL annuo (ore)',r3:'ROL ogni mese (ore, dal 3° periodo)',r1:'ROL ore/mese 1° periodo',y1:'Anni fine 1° periodo',r2:'ROL ore/mese 2° periodo',y2:'Anni fine 2° periodo',xa:'Ex Fest annue (ore)',x:'Ex Fest ogni mese (ore)',p1:'ROL spettanti 1ª fascia (%)',p2:'ROL spettanti 2ª fascia (%)'};
+ const reg2=[['Parametro','Valore'],...Object.keys(RL).map(k=>[RL[k],{v:+S.rules[k]||0,s:'n2'}]),[''],['Formule'],
+  ['Giorni = Ore / Ore per giorno'],
+  ['Saldo a fine mese = Residuo prec. + Maturato da inizio anno − Goduto da inizio anno']];
+ // foglio costo ore residue (ferie + permessi): ore residue = maturate − godute; costo = ore residue × costo orario
+ const ref2=mm===''?new Date(Y,11,31,23):new Date(Y,+mm+1,0,23),to2=iso(ref2),cs=[['Dipendente','Voce','Costo orario (€/h)','Ore maturate','Ore godute','Ore residue','Costo ore residue']],totRows=[];let gt=0;
+ sub.forEach(e=>{const cg=e.cg||{},ac=accr(e,ref2),cF=hasC(e.cost)?+e.cost:null,cP=hasC(e.costP)?+e.costP:null,
+  cb=costBase(e,mm),mF=cb.mF,mP=cb.mP,gF=cb.gF,gP=cb.gP,
+  r1=cs.length+1,r2=r1+1,r3=r1+2,tF=cF==null?0:(mF-gF)*cF,tP=cP==null?0:(mP-gP)*cP,
+  line=(l,r,c,m,g)=>[e.name,l,c==null?'':{v:c,s:'eur'},{v:m,s:'n2'},{v:g,s:'n2'},{f:`D${r}-E${r}`,v:m-g,s:'n2'},c==null?'':{f:`F${r}*C${r}`,v:(m-g)*c,s:'eur'}];
+  cs.push(line('Ferie',r1,cF,mF,gF),line('Permessi (ROL + Ex Fest)',r2,cP,mP,gP),[e.name,'Totale costo ore residue (ferie + permessi)','','','','',{f:`SUM(G${r1}:G${r2})`,v:tF+tP,s:'eur'}]);
+  gt+=tF+tP;totRows.push(r3)});
+ if(sub.length>1)cs.push([''],['TOTALE AZIENDA','','','','','',{f:totRows.map(r=>'G'+r).join('+'),v:gt,s:'eur'}]);
+ cs.push([''],[(mm===''?'Calcolo a fine anno '+Y+': maturate = residuo precedente + maturato nell\'anno; ':'Calcolo di '+MN[+mm]+' '+Y+' (solo il mese): maturate e godute nel mese; ')+'ore residue = maturate − godute; costo ore residue = ore residue × costo orario']);
+ const blob=buildXlsx([
+  {name:'Registro',rows:reg,head:1,filter:1,freeze:1,widths:[24,12,12,16,9,11,16,16,9]},
+  {name:'Costo ore residue',rows:cs,head:1,widths:[24,40,17,14,12,12,20]},
+  {name:'Regole e note',rows:reg2,head:1,widths:[46,12]}]);
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='Digitmode-maturazione-'+(sub.length==1?sub[0].name.replace(/[^A-Za-z0-9]+/g,'-')+'-':'')+(mm===''?'anno':MN[+mm])+'-'+Y+'.xlsx';document.body.appendChild(a);a.click();
+ setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},2000);
+ }catch(e){alert('Impossibile creare il file Excel: '+e.message)}}
+function vImp(A){const Q=S.rules,ni=(k,l)=>`<input type="number" step="1" min="0" data-r="${k}" value="${Q[k]}" aria-label="${l}" style="width:92px">`,pi=k=>`<input type="number" step="1" min="0" max="100" data-r="${k}" value="${Q[k]}" aria-label="ROL spettanti (%)" style="width:76px">`,n=(k,l)=>`<input type="number" step="0.01" data-r="${k}" value="${Q[k]}" aria-label="${l}" style="width:92px">`;
+ A.innerHTML=`<div class="card"><h2>Regole di maturazione</h2>
+ <div class="rr"><b>Ferie annue</b>${n('fa','Ferie annue')}<span>giorni</span><span class="sep">ogni mese:</span>${n('f','Ferie ogni mese')}<span>ore</span><span class="mu" id="fd"></span></div>
+ <div class="rr"><b>ROL</b>${n('ra','ROL annuo')}<span>ore</span><span class="sep">ogni mese:</span>${n('r3','ROL ogni mese')}<span>ore</span></div>
+ <div class="rr"><b>Ex Fest</b>${n('xa','Ex Fest annue')}<span>ore</span><span class="sep">ogni mese:</span>${n('x','Ex Fest ogni mese')}<span>ore</span></div>
+  <h2>Maturazione per anzianità di servizio</h2>
+ <div class="rr"><b>Fasce</b>${ni('y1','Anni della 1ª fascia')}<span>anni</span><span class="sep">fino al:</span>${ni('y2','Anno di fine 2ª fascia')}<span>anno</span></div>
+ <div class="tw"><table class="rs"><tr><th>Periodo</th><th>Ex Fest (ore/anno)</th><th>ROL spettanti</th><th>ROL (ore/anno)</th><th>Totale (ore/anno)</th></tr>
+ <tr><td><b id="l1"></b></td><td data-l="Ex Fest (ore/anno)" id="tx1"></td><td data-l="ROL spettanti">${pi('p1')} %</td><td data-l="ROL (ore/anno)" id="tr1"></td><td data-l="Totale (ore/anno)"><b id="tt1"></b></td></tr>
+ <tr><td><b id="l2"></b></td><td data-l="Ex Fest (ore/anno)" id="tx2"></td><td data-l="ROL spettanti">${pi('p2')} %</td><td data-l="ROL (ore/anno)" id="tr2"></td><td data-l="Totale (ore/anno)"><b id="tt2"></b></td></tr>
+ <tr><td><b id="l3"></b></td><td data-l="Ex Fest (ore/anno)" id="tx3"></td><td data-l="ROL spettanti">100 %</td><td data-l="ROL (ore/anno)" id="tr3"></td><td data-l="Totale (ore/anno)"><b id="tt3"></b></td></tr></table></div>
+ <div class="row" style="margin-top:16px"><button class="btn" id="rs">Salva regole</button></div></div>
+ <div class="card"><h2>Backup dei dati</h2>
+ <p class="mu" style="margin:0 0 10px">I dati sono salvati solo in questo browser. Esporta un backup regolarmente: il file contiene dipendenti, presenze/assenze e regole di maturazione, e si può reimportare anche su un altro computer o browser.</p>
+ <div class="row"><button class="btn" id="bx">Esporta backup</button><label>Importa backup (file .json)<input type="file" id="bi" accept=".json,application/json"></label></div>
+ <p class="mu" id="bs"></p></div>`;
+ const q=k=>A.querySelectorAll('[data-r="'+k+'"]'),v=k=>+q(k)[0].value||0,r2=x=>Math.round(x*100)/100,put=(k,x,ex)=>q(k).forEach(i=>{if(i!==ex)i.value=x}),fd=()=>{$('fd').textContent=fh(v('f')/8)+' giorni'};
+ q('fa')[0].oninput=()=>{put('f',r2(v('fa')*8/12));fd()};
+ q('f')[0].oninput=fd;fd();
+ q('xa')[0].oninput=()=>put('x',r2(v('xa')/12));
+ q('ra')[0].oninput=()=>put('r3',r2(v('ra')/12));
+ q('r3').forEach(i=>i.oninput=ev=>{put('r3',ev.target.value,ev.target);q('ra')[0].value=r2(v('r3')*12)});
+ bkStatus();
+ const pc=k=>Math.min(100,Math.max(0,v(k))),rf=()=>{const x=v('xa'),ra=v('ra'),y1=v('y1'),y2=v('y2'),P=[pc('p1'),pc('p2'),100];
+ [1,2,3].forEach(i=>{const rl=ra*P[i-1]/100;$('tx'+i).textContent=fh(x);$('tr'+i).textContent=fh(rl);$('tt'+i).textContent=fh(x+rl)});
+ $('l1').textContent='Primi '+y1+' anni';$('l2').textContent='Dal '+(y1+1)+'° al '+y2+'° anno';$('l3').textContent='Dal '+(y2+1)+'° anno in poi'};
+ A.querySelector('.card').oninput=rf;rf();
+ $('bx').onclick=()=>{exportBackup();bkStatus()};
+ $('bi').onchange=ev=>{const f=ev.target.files[0];ev.target.value='';if(f)importBackup(f)};
+ $('rs').onclick=()=>{if(v('y2')<=v('y1'))return alert('La fine della 2ª fascia deve essere dopo la fine della 1ª.');A.querySelectorAll('[data-r]').forEach(i=>S.rules[i.dataset.r]=+i.value||0);['p1','p2'].forEach(k=>S.rules[k]=pc(k));syncR();if(save())toast('✓ Regole salvate');render()};
+}
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+{const st=rd('presenze_v2');if(st)S={...S,...st};else{let raw=null;try{raw=localStorage.getItem('presenze_v2')}catch(e){}if(raw){try{localStorage.setItem('presenze_v2_corrotto',raw)}catch(e){}}demo()}}if(S.rv!==10){S.rules={...DR,...(S.rules||{}),f:DR.f,x:DR.x,r3:DR.r3,fa:DR.fa,ra:DR.ra,xa:DR.xa,y1:DR.y1,y2:DR.y2,p1:DR.p1,p2:DR.p2};S.rv=10;syncR();save()}S.rules={...DR,...S.rules};syncR();view=S.emps.length?'az':'anag';
+{const U=rd(UIK)||{},mOk=v=>v===''||(/^\d+$/.test(String(v))&&+v<=11),dOk=v=>typeof v=='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v);
+ const yo=[...$('yr').options].map(o=>+o.value);if(yo.includes(+U.Y)){Y=+U.Y;$('yr').value=Y;mr()}
+ if(dOk(U.pf)&&dOk(U.pt)&&U.pf<=U.pt){$('pf').value=U.pf;$('pt').value=U.pt}
+ if(S.emps.length){if(['az','dip','reg','anag','imp'].includes(U.view))view=U.view;if(S.emps.some(e=>e.id==U.sel))sel=U.sel}
+ if(U.MM!=null&&mOk(U.MM))MM=String(U.MM);
+ if(Number.isInteger(U.MY1))MY1=U.MY1;if(Number.isInteger(U.MY2))MY2=U.MY2}
+if(S.fv!==1){normEnt();S.fv=1}autoFill();save(true);ready=true;render();
+
+</script></body></html>
